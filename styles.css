@@ -351,10 +351,12 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
 .hero__bg-svg { width: 100%; height: 100%; }
 
 /* Signature brand artifact — a small tower of real 3D glass cubes (CSS
-   transform-style: preserve-3d, no WebGL/JS/libraries) that spins slowly
-   and continuously, with chromatic-accent edges echoing light dispersion
-   through glass. Pure CSS keyframes; the global prefers-reduced-motion
-   rule above already freezes these. */
+   transform-style: preserve-3d, no WebGL/JS/libraries) expressing
+   construction: each cube fades/scales in and settles into place one
+   after another, like blocks being stacked into a tower, holds fully
+   assembled for a moment, then dissolves and the sequence starts again.
+   Pure CSS keyframes; the global prefers-reduced-motion rule above
+   already freezes these. */
 .artifact-3d {
   position: absolute;
   right: 4%;
@@ -370,13 +372,7 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
   width: 100%;
   height: 100%;
   transform-style: preserve-3d;
-  animation: artifact-spin 16s var(--ease-signature) infinite;
-}
-
-@keyframes artifact-spin {
-  0%   { transform: rotateY(0deg) rotateX(-8deg); }
-  50%  { transform: rotateY(180deg) rotateX(8deg); }
-  100% { transform: rotateY(360deg) rotateX(-8deg); }
+  transform: rotateY(-16deg) rotateX(-9deg);
 }
 
 .cube {
@@ -384,31 +380,22 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
   width: 108px;
   height: 108px;
   transform-style: preserve-3d;
+  animation: cube-build 9.6s var(--ease-signature) infinite;
 }
-/* Each cube also drifts away from — and back into — the tower on its own
-   clock (translate3d + a scale/opacity dip while "apart"), so the cluster
-   continuously breaks apart and reassembles instead of just spinning as
-   one rigid block. */
-.cube--1 { left: 60px;  top: 10px;  animation: cube-drift-1 10s   var(--ease-signature) infinite; }
-.cube--2 { left: 150px; top: 90px;  animation: cube-drift-2 11.5s var(--ease-signature) infinite -3.2s; }
-.cube--3 { left: 60px;  top: 190px; animation: cube-drift-3 9.5s  var(--ease-signature) infinite -6.1s; }
-.cube--4 { left: 150px; top: 270px; animation: cube-drift-4 12.5s var(--ease-signature) infinite -1.4s; }
+.cube--1 { left: 60px;  top: 10px;  animation-delay: 0s; }
+.cube--2 { left: 150px; top: 90px;  animation-delay: 1.5s; }
+.cube--3 { left: 60px;  top: 190px; animation-delay: 3s; }
+.cube--4 { left: 150px; top: 270px; animation-delay: 4.5s; }
 
-@keyframes cube-drift-1 {
-  0%, 100% { transform: translate3d(0,0,0) scale(1); opacity: 1; }
-  45%, 55% { transform: translate3d(-46px,-34px,60px) scale(0.82); opacity: 0.7; }
-}
-@keyframes cube-drift-2 {
-  0%, 100% { transform: translate3d(0,0,0) scale(1); opacity: 1; }
-  45%, 55% { transform: translate3d(50px,22px,-52px) scale(0.82); opacity: 0.7; }
-}
-@keyframes cube-drift-3 {
-  0%, 100% { transform: translate3d(0,0,0) scale(1); opacity: 1; }
-  45%, 55% { transform: translate3d(-42px,30px,-42px) scale(0.82); opacity: 0.7; }
-}
-@keyframes cube-drift-4 {
-  0%, 100% { transform: translate3d(0,0,0) scale(1); opacity: 1; }
-  45%, 55% { transform: translate3d(44px,-28px,46px) scale(0.82); opacity: 0.7; }
+/* Build in with a slight overshoot (like snapping into place), hold
+   fully formed, then dissolve away before the next cycle. */
+@keyframes cube-build {
+  0%   { opacity: 0; transform: scale(0.2) translateY(50px) translateZ(-70px); }
+  10%  { opacity: 1; transform: scale(1.08) translateY(-8px) translateZ(0); }
+  16%  { opacity: 1; transform: scale(1) translateY(0) translateZ(0); }
+  80%  { opacity: 1; transform: scale(1) translateY(0) translateZ(0); }
+  92%  { opacity: 0.3; transform: scale(0.65) translateY(24px) translateZ(-40px); }
+  100% { opacity: 0; transform: scale(0.2) translateY(50px) translateZ(-70px); }
 }
 
 .cube__face {
@@ -416,7 +403,7 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
   inset: 0;
   border: 2px solid var(--color-accent);
   background: rgba(20, 24, 12, 0.25);
-  animation: cube-glow-lime 3.6s ease-in-out infinite;
+  animation: cube-glow-lime 9.6s var(--ease-signature) infinite;
 }
 .cube__face--front  { transform: translateZ(54px); }
 .cube__face--back   { transform: rotateY(180deg) translateZ(54px); }
@@ -425,23 +412,32 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
 .cube__face--top    { transform: rotateX(90deg) translateZ(54px); }
 .cube__face--bottom { transform: rotateX(-90deg) translateZ(54px); }
 
-.cube--2 .cube__face { animation-delay: -1.2s; }
-.cube--3 .cube__face { animation-delay: -2.4s; }
-.cube--4 .cube__face { animation-delay: -0.6s; }
+.cube--1 .cube__face { animation-delay: 0s; }
+.cube--2 .cube__face { animation-delay: 1.5s; }
+.cube--3 .cube__face { animation-delay: 3s; }
+.cube--4 .cube__face { animation-delay: 4.5s; }
 
-/* Shimmering glow — edges breathe brighter/dimmer on a loop instead of
-   staying a flat static outline. */
+/* Tenuous glow that flashes brighter right as a block snaps into place
+   (matching cube-build's 10-16% settle), softens while held, and fades
+   out with the block as it dissolves — phase-locked to cube-build via
+   the same duration/delay pairing above. */
 @keyframes cube-glow-lime {
-  0%, 100% { border-color: var(--color-accent); box-shadow: 0 0 10px rgba(225,255,60,0.2); }
-  50%      { border-color: #f3ffb3; box-shadow: 0 0 30px rgba(225,255,60,0.75), 0 0 50px rgba(225,255,60,0.3); }
+  0%, 6%   { border-color: rgba(225,255,60,0.12); box-shadow: none; }
+  11%      { border-color: #f8ffd0; box-shadow: 0 0 30px rgba(225,255,60,0.85), 0 0 54px rgba(225,255,60,0.35); }
+  20%, 80% { border-color: var(--color-accent); box-shadow: 0 0 11px rgba(225,255,60,0.22); }
+  94%, 100% { border-color: rgba(225,255,60,0.1); box-shadow: none; }
 }
 @keyframes cube-glow-olive {
-  0%, 100% { border-color: var(--color-accent-alt); box-shadow: 0 0 10px rgba(181,212,9,0.25); }
-  50%      { border-color: #e2ff6b; box-shadow: 0 0 28px rgba(181,212,9,0.7), 0 0 46px rgba(181,212,9,0.3); }
+  0%, 6%   { border-color: rgba(181,212,9,0.12); box-shadow: none; }
+  11%      { border-color: #eeff9c; box-shadow: 0 0 28px rgba(181,212,9,0.8), 0 0 50px rgba(181,212,9,0.3); }
+  20%, 80% { border-color: var(--color-accent-alt); box-shadow: 0 0 11px rgba(181,212,9,0.26); }
+  94%, 100% { border-color: rgba(181,212,9,0.1); box-shadow: none; }
 }
 @keyframes cube-glow-white {
-  0%, 100% { border-color: var(--color-white); box-shadow: 0 0 10px rgba(255,255,255,0.15); }
-  50%      { border-color: var(--color-white); box-shadow: 0 0 26px rgba(255,255,255,0.55), 0 0 44px rgba(255,255,255,0.2); }
+  0%, 6%   { border-color: rgba(255,255,255,0.1); box-shadow: none; }
+  11%      { border-color: var(--color-white); box-shadow: 0 0 26px rgba(255,255,255,0.65), 0 0 46px rgba(255,255,255,0.25); }
+  20%, 80% { border-color: var(--color-white); box-shadow: 0 0 11px rgba(255,255,255,0.18); }
+  94%, 100% { border-color: rgba(255,255,255,0.08); box-shadow: none; }
 }
 
 /* One accent face per cube, echoing the reference's chromatic-dispersion
@@ -453,9 +449,10 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
   animation-name: cube-glow-white;
 }
 
-/* Smaller repeats of the artifact further down the page, so similar
-   figures keep appearing as you scroll — each with its own size, drift
-   pattern and timing rather than a copy-pasted clone. */
+/* Smaller repeats of the artifact further down the page, so the same
+   "blocks building into a tower" motion keeps appearing as you scroll,
+   each with its own size, timing and corner rather than a copy-pasted
+   clone, all the way to the end of the page. */
 .artifact-3d--mini {
   position: absolute;
   width: 170px;
@@ -464,17 +461,23 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
   opacity: 0.55;
   pointer-events: none;
 }
-.artifact-3d--mini .artifact-3d__spin { animation-duration: 21s; }
+.artifact-3d--mini .artifact-3d__spin { transform: rotateY(-16deg) rotateX(-9deg); }
 .artifact-3d--corner-left  { left: 2%; right: auto; bottom: 6%; top: auto; transform: none; }
 .artifact-3d--corner-right { right: 3%; left: auto; bottom: 8%; top: auto; transform: none; }
+.artifact-3d--corner-top-left  { left: 2%; right: auto; top: 130px; bottom: auto; transform: none; }
+.artifact-3d--corner-top-right { right: 3%; left: auto; top: 130px; bottom: auto; transform: none; }
 
 .cube--mini {
   position: absolute;
   width: 64px;
   height: 64px;
   transform-style: preserve-3d;
+  animation: cube-build 7.4s var(--ease-signature) infinite;
 }
-.cube--mini .cube__face { border-width: 1.5px; }
+.cube--mini .cube__face {
+  border-width: 1.5px;
+  animation-duration: 7.4s;
+}
 .cube--mini .cube__face--front  { transform: translateZ(32px); }
 .cube--mini .cube__face--back   { transform: rotateY(180deg) translateZ(32px); }
 .cube--mini .cube__face--right  { transform: rotateY(90deg) translateZ(32px); }
@@ -482,14 +485,26 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
 .cube--mini .cube__face--top    { transform: rotateX(90deg) translateZ(32px); }
 .cube--mini .cube__face--bottom { transform: rotateX(-90deg) translateZ(32px); }
 
-.cube--mini-1 { left: 8px;  top: 6px;  animation: cube-drift-2 9s var(--ease-signature) infinite; }
-.cube--mini-2 { left: 78px; top: 96px; animation: cube-drift-4 10.5s var(--ease-signature) infinite -2.4s; }
-.cube--mini-1 .cube__face--top,   .cube--mini-2 .cube__face--right { animation-name: cube-glow-olive; }
+.cube--mini-1, .cube--mini-1 .cube__face { animation-delay: 0s; }
+.cube--mini-2, .cube--mini-2 .cube__face { animation-delay: 1.4s; }
+.cube--mini-3, .cube--mini-3 .cube__face { animation-delay: 0.6s; }
+.cube--mini-4, .cube--mini-4 .cube__face { animation-delay: 2s; }
+
+.cube--mini-1 { left: 8px;  top: 96px; }
+.cube--mini-2 { left: 78px; top: 8px; }
+.cube--mini-3 { left: 8px;  top: 96px; }
+.cube--mini-4 { left: 78px; top: 8px; }
+
+.cube--mini-1 .cube__face--top,   .cube--mini-2 .cube__face--right,
+.cube--mini-3 .cube__face--top,   .cube--mini-4 .cube__face--right { animation-name: cube-glow-olive; }
 .cube--mini-1 .cube__face--front, .cube--mini-1 .cube__face--back,
 .cube--mini-1 .cube__face--left,  .cube--mini-1 .cube__face--bottom,
 .cube--mini-2 .cube__face--front, .cube--mini-2 .cube__face--back,
 .cube--mini-2 .cube__face--left,  .cube--mini-2 .cube__face--top,
-.cube--mini-2 .cube__face--bottom { animation-name: cube-glow-lime; }
+.cube--mini-3 .cube__face--front, .cube--mini-3 .cube__face--back,
+.cube--mini-3 .cube__face--left,  .cube--mini-3 .cube__face--bottom,
+.cube--mini-4 .cube__face--front, .cube--mini-4 .cube__face--back,
+.cube--mini-4 .cube__face--left,  .cube--mini-4 .cube__face--top { animation-name: cube-glow-lime; }
 
 .section--has-artifact { position: relative; overflow: hidden; }
 
