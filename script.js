@@ -156,4 +156,83 @@
       }
     });
   }
+
+  /* ---------- Orbital timeline (Process section) ----------
+     Nodes are positioned every frame from a slowly-advancing angle;
+     clicking a node expands its detail card below the stage. Positions
+     are plain inline transforms, so prefers-reduced-motion just skips
+     the per-frame advance and leaves the nodes at their initial spot. */
+  document.querySelectorAll('[data-orbital]').forEach(function (root) {
+    var stage = root.querySelector('.orbital__stage');
+    var nodes = Array.prototype.slice.call(root.querySelectorAll('.orbital__node'));
+    var card = root.querySelector('[data-orbital-card]');
+    if (!stage || !nodes.length || !card) return;
+
+    var cardTitle = card.querySelector('.orbital__card-title');
+    var cardQuestion = card.querySelector('.orbital__card-question');
+    var cardText = card.querySelector('.orbital__card-text');
+    var cardResult = card.querySelector('.orbital__card-result');
+    var closeBtn = card.querySelector('[data-orbital-close]');
+
+    var angle = -90;
+    var activeIndex = -1;
+    var rafId = null;
+
+    function radius() {
+      return stage.clientWidth <= 340 ? 118 : 170;
+    }
+
+    function layout() {
+      var r = radius();
+      var step = 360 / nodes.length;
+      nodes.forEach(function (node, i) {
+        var rad = ((angle + step * i) * Math.PI) / 180;
+        var x = Math.cos(rad) * r;
+        var y = Math.sin(rad) * r;
+        node.style.transform = 'translate(' + x.toFixed(2) + 'px, ' + y.toFixed(2) + 'px)';
+      });
+    }
+
+    function tick() {
+      angle += 0.035;
+      layout();
+      rafId = window.requestAnimationFrame(tick);
+    }
+
+    layout();
+    if (!prefersReducedMotion) {
+      rafId = window.requestAnimationFrame(tick);
+    }
+
+    function openCard(node, index) {
+      activeIndex = index;
+      nodes.forEach(function (n) { n.classList.remove('is-active'); });
+      node.classList.add('is-active');
+      cardTitle.textContent = node.getAttribute('data-title') || '';
+      cardQuestion.textContent = node.getAttribute('data-question') || '';
+      cardText.textContent = node.getAttribute('data-text') || '';
+      cardResult.innerHTML = node.getAttribute('data-result') || '';
+      card.hidden = false;
+    }
+
+    function closeCard() {
+      activeIndex = -1;
+      nodes.forEach(function (n) { n.classList.remove('is-active'); });
+      card.hidden = true;
+    }
+
+    nodes.forEach(function (node, i) {
+      node.addEventListener('click', function () {
+        if (activeIndex === i) {
+          closeCard();
+        } else {
+          openCard(node, i);
+        }
+      });
+    });
+
+    if (closeBtn) closeBtn.addEventListener('click', closeCard);
+
+    window.addEventListener('resize', layout, { passive: true });
+  });
 })();
