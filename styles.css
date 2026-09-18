@@ -135,7 +135,13 @@ html { scroll-behavior: smooth; scroll-padding-top: 96px; }
 }
 
 body {
-  background: var(--color-bg);
+  /* Subtle layered gradients (a dark vertical fade plus two faint lime/olive
+     glows) in DBL's own palette, echoing the tonal depth of the spin-border
+     button's surface gradient across the whole page background. */
+  background:
+    radial-gradient(ellipse 55% 35% at 88% 0%, rgba(225, 255, 60, 0.05), transparent 60%),
+    radial-gradient(ellipse 45% 30% at 8% 35%, rgba(181, 212, 9, 0.045), transparent 65%),
+    linear-gradient(180deg, #000000 0%, #030402 45%, #000000 100%);
   color: var(--color-text);
   font-family: var(--font-body);
   font-size: 1rem;
@@ -244,6 +250,66 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
 
 .btn--full { width: 100%; }
 
+/* Spinning-border pill CTA — a conic-gradient ring sweeps around the
+   button on hover, in DBL's lime instead of the generic reference's
+   white. Deliberately pill-shaped (an exception to the flat/no-radius
+   button language) since that curve is part of the effect itself. */
+.btn--spin {
+  position: relative;
+  overflow: hidden;
+  padding: 1px;
+  border-radius: 999px;
+  background: transparent;
+}
+.btn--spin:hover { transform: translateY(-2px); box-shadow: 0 0 26px rgba(225, 255, 60, 0.18); }
+
+.btn__spin-ring {
+  position: absolute;
+  inset: -100%;
+  background: conic-gradient(from 90deg at 50% 50%, transparent 0%, transparent 75%, var(--color-accent) 100%);
+  animation: btn-spin 3s linear infinite;
+  opacity: 0;
+  transition: opacity var(--duration-base) var(--ease-signature);
+}
+.btn--spin:hover .btn__spin-ring { opacity: 1; }
+
+.btn__spin-static {
+  position: absolute;
+  inset: 0;
+  border-radius: 999px;
+  background: var(--color-border);
+  transition: opacity var(--duration-base) var(--ease-signature);
+}
+.btn--spin:hover .btn__spin-static { opacity: 0; }
+
+.btn__spin-content {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  width: 100%;
+  height: 100%;
+  padding: 0.85rem 1.6rem;
+  border-radius: 999px;
+  background: linear-gradient(to bottom, var(--color-surface), #000000);
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  font-size: 0.82rem;
+  letter-spacing: 0.08em;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12);
+  transition: color var(--duration-base) var(--ease-signature);
+}
+.btn--spin:hover .btn__spin-content { color: var(--color-accent); }
+
+.btn__spin-arrow { transition: transform var(--duration-base) var(--ease-signature); flex-shrink: 0; }
+.btn--spin:hover .btn__spin-arrow { transform: translateX(2px); }
+
+@keyframes btn-spin {
+  to { transform: rotate(360deg); }
+}
+
 /* =========================================================
    NAVBAR
    ========================================================= */
@@ -269,7 +335,7 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
 }
 
 .navbar__logo { display: flex; align-items: center; }
-.navbar__logo-svg { height: 68px; width: auto; }
+.navbar__logo-svg { height: 88px; width: auto; }
 
 /* DBL original imagotipo colors (from brand SVG) */
 .cls-1 { fill: var(--color-accent); }
@@ -308,6 +374,8 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
 .navbar__links a:hover::before { opacity: 1; transform: scale(1); }
 
 .navbar__cta { padding: 0.7rem 1.5rem; min-height: 42px; font-size: 0.88rem; }
+.navbar__cta.btn--spin { padding: 1px; min-height: 42px; }
+.navbar__cta.btn--spin .btn__spin-content { padding: 0.55rem 1.4rem; font-size: 0.76rem; }
 
 .navbar__toggle {
   display: none;
@@ -361,10 +429,10 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
   position: absolute;
   right: 4%;
   top: 50%;
-  width: 420px;
-  height: 300px;
+  width: 260px;
+  height: 540px;
   transform: translateY(-52%);
-  perspective: 1100px;
+  perspective: 1300px;
 }
 
 .artifact-3d__spin {
@@ -372,23 +440,23 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
   width: 100%;
   height: 100%;
   transform-style: preserve-3d;
-  transform: rotateY(-24deg) rotateX(-15deg);
+  transform: rotateY(-18deg) rotateX(-10deg);
 }
 
-/* Four cubes locked edge-to-edge on a 132px grid into a clear
-   S-tetromino silhouette, so the assembled state reads as blocks
-   deliberately forming a shape — not a loose diagonal offset. */
+/* Four large wireframe cubes stacked bottom-to-top, each one alternating
+   left/right of the one before it — reads as blocks being built into a
+   tower one on top of the other, left, right, left, right. */
 .cube {
   position: absolute;
-  width: 132px;
-  height: 132px;
+  width: 150px;
+  height: 150px;
   transform-style: preserve-3d;
   animation: cube-build 9.6s var(--ease-signature) infinite;
 }
-.cube--1 { left: 0px;   top: 132px; animation-delay: 0s; }
-.cube--2 { left: 132px; top: 132px; animation-delay: 1.5s; }
-.cube--3 { left: 132px; top: 0px;   animation-delay: 3s; }
-.cube--4 { left: 264px; top: 0px;   animation-delay: 4.5s; }
+.cube--1 { left: 0px;  top: 390px; animation-delay: 0s; }
+.cube--2 { left: 75px; top: 260px; animation-delay: 1.5s; }
+.cube--3 { left: 0px;  top: 130px; animation-delay: 3s; }
+.cube--4 { left: 75px; top: 0px;   animation-delay: 4.5s; }
 
 /* Build in with a slight overshoot (like snapping into place), hold
    fully formed, then dissolve away before the next cycle. */
@@ -405,15 +473,15 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
   position: absolute;
   inset: 0;
   border: 2px solid var(--color-accent);
-  background: rgba(20, 24, 12, 0.25);
+  background: rgba(10, 14, 6, 0.12);
   animation: cube-glow-lime 9.6s var(--ease-signature) infinite;
 }
-.cube__face--front  { transform: translateZ(66px); }
-.cube__face--back   { transform: rotateY(180deg) translateZ(66px); }
-.cube__face--right  { transform: rotateY(90deg) translateZ(66px); }
-.cube__face--left   { transform: rotateY(-90deg) translateZ(66px); }
-.cube__face--top    { transform: rotateX(90deg) translateZ(66px); }
-.cube__face--bottom { transform: rotateX(-90deg) translateZ(66px); }
+.cube__face--front  { transform: translateZ(75px); }
+.cube__face--back   { transform: rotateY(180deg) translateZ(75px); }
+.cube__face--right  { transform: rotateY(90deg) translateZ(75px); }
+.cube__face--left   { transform: rotateY(-90deg) translateZ(75px); }
+.cube__face--top    { transform: rotateX(90deg) translateZ(75px); }
+.cube__face--bottom { transform: rotateX(-90deg) translateZ(75px); }
 
 .cube--1 .cube__face { animation-delay: 0s; }
 .cube--2 .cube__face { animation-delay: 1.5s; }
@@ -458,13 +526,13 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
    clone, all the way to the end of the page. */
 .artifact-3d--mini {
   position: absolute;
-  width: 190px;
-  height: 150px;
-  perspective: 850px;
+  width: 165px;
+  height: 195px;
+  perspective: 950px;
   opacity: 0.55;
   pointer-events: none;
 }
-.artifact-3d--mini .artifact-3d__spin { transform: rotateY(-24deg) rotateX(-15deg); }
+.artifact-3d--mini .artifact-3d__spin { transform: rotateY(-18deg) rotateX(-10deg); }
 .artifact-3d--corner-left  { left: 2%; right: auto; bottom: 6%; top: auto; transform: none; }
 .artifact-3d--corner-right { right: 3%; left: auto; bottom: 8%; top: auto; transform: none; }
 .artifact-3d--corner-top-left  { left: 2%; right: auto; top: 130px; bottom: auto; transform: none; }
@@ -472,34 +540,33 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
 
 .cube--mini {
   position: absolute;
-  width: 80px;
-  height: 80px;
+  width: 100px;
+  height: 100px;
   transform-style: preserve-3d;
   animation: cube-build 7.4s var(--ease-signature) infinite;
 }
 .cube--mini .cube__face {
-  border-width: 1.5px;
+  border-width: 2px;
   animation-duration: 7.4s;
 }
-.cube--mini .cube__face--front  { transform: translateZ(40px); }
-.cube--mini .cube__face--back   { transform: rotateY(180deg) translateZ(40px); }
-.cube--mini .cube__face--right  { transform: rotateY(90deg) translateZ(40px); }
-.cube--mini .cube__face--left   { transform: rotateY(-90deg) translateZ(40px); }
-.cube--mini .cube__face--top    { transform: rotateX(90deg) translateZ(40px); }
-.cube--mini .cube__face--bottom { transform: rotateX(-90deg) translateZ(40px); }
+.cube--mini .cube__face--front  { transform: translateZ(50px); }
+.cube--mini .cube__face--back   { transform: rotateY(180deg) translateZ(50px); }
+.cube--mini .cube__face--right  { transform: rotateY(90deg) translateZ(50px); }
+.cube--mini .cube__face--left   { transform: rotateY(-90deg) translateZ(50px); }
+.cube--mini .cube__face--top    { transform: rotateX(90deg) translateZ(50px); }
+.cube--mini .cube__face--bottom { transform: rotateX(-90deg) translateZ(50px); }
 
 .cube--mini-1, .cube--mini-1 .cube__face { animation-delay: 0s; }
 .cube--mini-2, .cube--mini-2 .cube__face { animation-delay: 1.4s; }
 .cube--mini-3, .cube--mini-3 .cube__face { animation-delay: 0.6s; }
 .cube--mini-4, .cube--mini-4 .cube__face { animation-delay: 2s; }
 
-/* Two cubes locked edge-to-edge (a small Tetris domino), instead of a
-   loose diagonal offset, so even the smaller repeats read as blocks
-   forming a shape together. */
-.cube--mini-1 { left: 0px;  top: 35px; }
-.cube--mini-2 { left: 80px; top: 35px; }
-.cube--mini-3 { left: 0px;  top: 35px; }
-.cube--mini-4 { left: 80px; top: 35px; }
+/* One cube stacked on top of the other, alternating left/right — the
+   same "building a tower" motif as the hero cubes, at a smaller scale. */
+.cube--mini-1 { left: 0px;  top: 84px; }
+.cube--mini-2 { left: 55px; top: 0px; }
+.cube--mini-3 { left: 0px;  top: 84px; }
+.cube--mini-4 { left: 55px; top: 0px; }
 
 .cube--mini-1 .cube__face--top,   .cube--mini-2 .cube__face--right,
 .cube--mini-3 .cube__face--top,   .cube--mini-4 .cube__face--right { animation-name: cube-glow-olive; }
@@ -701,7 +768,7 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
 .orbital__stage {
   position: relative;
   width: 100%;
-  max-width: 480px;
+  max-width: 672px;
   aspect-ratio: 1 / 1;
   margin: 0 auto;
 }
@@ -710,8 +777,8 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
   position: absolute;
   top: 50%;
   left: 50%;
-  width: 92px;
-  height: 92px;
+  width: 129px;
+  height: 129px;
   transform: translate(-50%, -50%);
   border-radius: 50%;
   background: var(--color-surface);
@@ -722,11 +789,11 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
   z-index: 1;
 }
 .orbital__hub-dot {
-  width: 14px;
-  height: 14px;
+  width: 20px;
+  height: 20px;
   border-radius: 50%;
   background: var(--color-accent);
-  box-shadow: 0 0 16px rgba(225, 255, 60, 0.6);
+  box-shadow: 0 0 20px rgba(225, 255, 60, 0.6);
 }
 .orbital__hub-ring {
   position: absolute;
@@ -750,9 +817,9 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
   position: absolute;
   top: 50%;
   left: 50%;
-  width: 84px;
-  height: 84px;
-  margin: -42px 0 0 -42px;
+  width: 118px;
+  height: 118px;
+  margin: -59px 0 0 -59px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -776,15 +843,15 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
 .orbital__node-num {
   font-family: var(--font-heading);
   font-weight: 800;
-  font-size: 0.85rem;
+  font-size: 1.2rem;
 }
 .orbital__node-label {
-  font-size: 0.62rem;
+  font-size: 0.82rem;
   text-transform: uppercase;
   letter-spacing: 0.04em;
   text-align: center;
   line-height: 1.15;
-  padding: 0 0.35rem;
+  padding: 0 0.4rem;
 }
 
 .orbital__card {
@@ -825,10 +892,10 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
 .orbital__card-result strong { color: var(--color-accent); }
 
 @media (max-width: 640px) {
-  .orbital__stage { max-width: 320px; }
-  .orbital__hub { width: 68px; height: 68px; }
-  .orbital__node { width: 66px; height: 66px; margin: -33px 0 0 -33px; }
-  .orbital__node-label { font-size: 0.56rem; }
+  .orbital__stage { max-width: 448px; }
+  .orbital__hub { width: 95px; height: 95px; }
+  .orbital__node { width: 92px; height: 92px; margin: -46px 0 0 -46px; }
+  .orbital__node-label { font-size: 0.72rem; }
 }
 
 /* =========================================================

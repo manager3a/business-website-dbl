@@ -179,7 +179,7 @@
     var rafId = null;
 
     function radius() {
-      return stage.clientWidth <= 340 ? 118 : 170;
+      return stage.clientWidth <= 480 ? 165 : 238;
     }
 
     function layout() {
