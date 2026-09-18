@@ -65,20 +65,17 @@
         <svg viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice" class="hero__bg-svg">
           <defs>
             <pattern id="grid" width="60" height="60" patternUnits="userSpaceOnUse">
-              <path d="M 60 0 L 0 0 0 60" fill="none" stroke="rgba(225,255,60,0.06)" stroke-width="1"/>
+              <path d="M 60 0 L 0 0 0 60" fill="none" stroke="rgba(225,255,60,0.05)" stroke-width="1"/>
             </pattern>
           </defs>
           <rect width="1440" height="900" fill="url(#grid)"/>
-          <g stroke="var(--color-accent)" stroke-width="1.5" fill="none" opacity="0.35">
-            <path d="M100 750 L100 500 L300 500 L300 350 L520 350"/>
-            <circle cx="520" cy="350" r="5" fill="var(--color-accent)"/>
-            <path d="M1340 200 L1140 200 L1140 400 L980 400 L980 620"/>
-            <circle cx="980" cy="620" r="5" fill="var(--color-accent)"/>
-            <path d="M700 80 L700 220 L860 220"/>
-            <circle cx="860" cy="220" r="4" fill="var(--color-accent)"/>
-          </g>
-          <g stroke="var(--color-accent)" stroke-width="2" fill="none" opacity="0.5">
-            <polyline points="180,650 260,600 340,630 420,560 500,590" />
+          <g class="artifact">
+            <polygon class="artifact__piece artifact__piece--1" points="216,166 282,280 216,234 150,280" fill="var(--color-accent)" opacity="0.5"/>
+            <polygon class="artifact__piece artifact__piece--2" points="1262,20 1344,150 1262,98 1180,150" fill="none" stroke="var(--color-white)" stroke-width="6" opacity="0.32"/>
+            <polygon class="artifact__piece artifact__piece--3" points="1196,510 1282,640 1196,588 1110,640" fill="var(--color-accent-alt)" opacity="0.4"/>
+            <polygon class="artifact__piece artifact__piece--4" points="146,528 212,630 146,589 80,630" fill="none" stroke="var(--color-accent)" stroke-width="5" opacity="0.4"/>
+            <polygon class="artifact__piece artifact__piece--5" points="1345,660 1400,740 1345,708 1290,740" fill="var(--color-white)" opacity="0.16"/>
+            <polygon class="artifact__piece artifact__piece--6" points="305,700 360,780 305,748 250,780" fill="none" stroke="var(--color-accent-alt)" stroke-width="5" opacity="0.3"/>
           </g>
         </svg>
       </div>
