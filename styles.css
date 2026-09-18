@@ -135,13 +135,18 @@ html { scroll-behavior: smooth; scroll-padding-top: 96px; }
 }
 
 body {
-  /* Subtle layered gradients (a dark vertical fade plus two faint lime/olive
-     glows) in DBL's own palette, echoing the tonal depth of the spin-border
-     button's surface gradient across the whole page background. */
+  /* Layered gradients (lime + olive glows over a dark vertical fade) in
+     DBL's own palette, echoing the tonal depth of the spin-border button's
+     surface gradient. Several glows spread top/middle/bottom (rather than
+     background-attachment: fixed, which renders unreliably combined with
+     this page's overflow-x: hidden) so the effect reads on a tall page,
+     not just near the very top. */
   background:
-    radial-gradient(ellipse 55% 35% at 88% 0%, rgba(225, 255, 60, 0.05), transparent 60%),
-    radial-gradient(ellipse 45% 30% at 8% 35%, rgba(181, 212, 9, 0.045), transparent 65%),
-    linear-gradient(180deg, #000000 0%, #030402 45%, #000000 100%);
+    radial-gradient(ellipse 70% 40% at 85% 0%, rgba(225, 255, 60, 0.14), transparent 65%),
+    radial-gradient(ellipse 60% 35% at 5% 32%, rgba(181, 212, 9, 0.12), transparent 65%),
+    radial-gradient(ellipse 65% 35% at 90% 62%, rgba(225, 255, 60, 0.1), transparent 65%),
+    radial-gradient(ellipse 60% 35% at 5% 90%, rgba(181, 212, 9, 0.11), transparent 65%),
+    linear-gradient(180deg, #050600 0%, #000000 50%, #060500 100%);
   color: var(--color-text);
   font-family: var(--font-body);
   font-size: 1rem;
@@ -277,7 +282,7 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
   position: absolute;
   inset: 0;
   border-radius: 999px;
-  background: var(--color-border);
+  background: var(--color-accent-alt);
   transition: opacity var(--duration-base) var(--ease-signature);
 }
 .btn--spin:hover .btn__spin-static { opacity: 0; }
@@ -293,15 +298,13 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
   height: 100%;
   padding: 0.85rem 1.6rem;
   border-radius: 999px;
-  background: linear-gradient(to bottom, var(--color-surface), #000000);
-  color: var(--color-text-muted);
+  background: var(--color-accent);
+  color: var(--color-on-accent);
   text-transform: uppercase;
   font-size: 0.82rem;
   letter-spacing: 0.08em;
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12);
-  transition: color var(--duration-base) var(--ease-signature);
+  transition: background var(--duration-base) var(--ease-signature);
 }
-.btn--spin:hover .btn__spin-content { color: var(--color-accent); }
 
 .btn__spin-arrow { transition: transform var(--duration-base) var(--ease-signature); flex-shrink: 0; }
 .btn--spin:hover .btn__spin-arrow { transform: translateX(2px); }
@@ -335,7 +338,7 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
 }
 
 .navbar__logo { display: flex; align-items: center; }
-.navbar__logo-svg { height: 88px; width: auto; }
+.navbar__logo-svg { height: 68px; width: auto; }
 
 /* DBL original imagotipo colors (from brand SVG) */
 .cls-1 { fill: var(--color-accent); }
@@ -414,9 +417,11 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
   position: absolute;
   inset: 0;
   z-index: 0;
-  opacity: 0.9;
 }
-.hero__bg-svg { width: 100%; height: 100%; }
+/* Opacity lives on the SVG grid itself, not on .hero__bg — opacity on an
+   ancestor of the 3D cubes below would force their whole preserve-3d
+   subtree to flatten into a 2D layer, killing the 3D effect entirely. */
+.hero__bg-svg { width: 100%; height: 100%; opacity: 0.9; }
 
 /* Signature brand artifact — a small tower of real 3D glass cubes (CSS
    transform-style: preserve-3d, no WebGL/JS/libraries) expressing
@@ -432,7 +437,7 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
   width: 260px;
   height: 540px;
   transform: translateY(-52%);
-  perspective: 1300px;
+  perspective: 900px;
 }
 
 .artifact-3d__spin {
@@ -440,7 +445,7 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
   width: 100%;
   height: 100%;
   transform-style: preserve-3d;
-  transform: rotateY(-18deg) rotateX(-10deg);
+  transform: rotateY(-35deg) rotateX(-22deg);
 }
 
 /* Four large wireframe cubes stacked bottom-to-top, each one alternating
@@ -459,14 +464,25 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
 .cube--4 { left: 75px; top: 0px;   animation-delay: 4.5s; }
 
 /* Build in with a slight overshoot (like snapping into place), hold
-   fully formed, then dissolve away before the next cycle. */
+   fully formed, then dissolve away before the next cycle. Transform-only:
+   opacity lives in a separate cube-face-fade animation applied to each
+   .cube__face leaf instead, because animating opacity on .cube itself
+   (the preserve-3d element) forces Chromium to flatten its 3D children
+   into a 2D layer, silently killing the cube's actual depth. */
 @keyframes cube-build {
-  0%   { opacity: 0; transform: scale(0.2) translateY(50px) translateZ(-70px); }
-  10%  { opacity: 1; transform: scale(1.08) translateY(-8px) translateZ(0); }
-  16%  { opacity: 1; transform: scale(1) translateY(0) translateZ(0); }
-  80%  { opacity: 1; transform: scale(1) translateY(0) translateZ(0); }
-  92%  { opacity: 0.3; transform: scale(0.65) translateY(24px) translateZ(-40px); }
-  100% { opacity: 0; transform: scale(0.2) translateY(50px) translateZ(-70px); }
+  0%   { transform: scale(0.2) translateY(50px) translateZ(-70px); }
+  10%  { transform: scale(1.08) translateY(-8px) translateZ(0); }
+  16%  { transform: scale(1) translateY(0) translateZ(0); }
+  80%  { transform: scale(1) translateY(0) translateZ(0); }
+  92%  { transform: scale(0.65) translateY(24px) translateZ(-40px); }
+  100% { transform: scale(0.2) translateY(50px) translateZ(-70px); }
+}
+@keyframes cube-face-fade {
+  0%   { opacity: 0; }
+  10%  { opacity: 1; }
+  80%  { opacity: 1; }
+  92%  { opacity: 0.3; }
+  100% { opacity: 0; }
 }
 
 .cube__face {
@@ -474,7 +490,7 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
   inset: 0;
   border: 2px solid var(--color-accent);
   background: rgba(10, 14, 6, 0.12);
-  animation: cube-glow-lime 9.6s var(--ease-signature) infinite;
+  animation: cube-face-fade 9.6s var(--ease-signature) infinite, cube-glow-lime 9.6s var(--ease-signature) infinite;
 }
 .cube__face--front  { transform: translateZ(75px); }
 .cube__face--back   { transform: rotateY(180deg) translateZ(75px); }
@@ -514,10 +530,10 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
 /* One accent face per cube, echoing the reference's chromatic-dispersion
    edges — kept within DBL's own palette (olive/white), not new colors. */
 .cube--2 .cube__face--right, .cube--4 .cube__face--right {
-  animation-name: cube-glow-olive;
+  animation-name: cube-face-fade, cube-glow-olive;
 }
 .cube--1 .cube__face--top, .cube--3 .cube__face--top {
-  animation-name: cube-glow-white;
+  animation-name: cube-face-fade, cube-glow-white;
 }
 
 /* Smaller repeats of the artifact further down the page, so the same
@@ -528,11 +544,14 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
   position: absolute;
   width: 165px;
   height: 195px;
-  perspective: 950px;
-  opacity: 0.55;
+  perspective: 650px;
   pointer-events: none;
 }
-.artifact-3d--mini .artifact-3d__spin { transform: rotateY(-18deg) rotateX(-10deg); }
+/* Opacity lives on each face (a 3D leaf, safe to fade) rather than on
+   .artifact-3d--mini itself — that element sits above the preserve-3d
+   chain, so opacity there would flatten the mini cubes' 3D entirely. */
+.artifact-3d--mini .cube__face { opacity: 0.55; }
+.artifact-3d--mini .artifact-3d__spin { transform: rotateY(-35deg) rotateX(-22deg); }
 .artifact-3d--corner-left  { left: 2%; right: auto; bottom: 6%; top: auto; transform: none; }
 .artifact-3d--corner-right { right: 3%; left: auto; bottom: 8%; top: auto; transform: none; }
 .artifact-3d--corner-top-left  { left: 2%; right: auto; top: 130px; bottom: auto; transform: none; }
@@ -569,7 +588,7 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
 .cube--mini-4 { left: 55px; top: 0px; }
 
 .cube--mini-1 .cube__face--top,   .cube--mini-2 .cube__face--right,
-.cube--mini-3 .cube__face--top,   .cube--mini-4 .cube__face--right { animation-name: cube-glow-olive; }
+.cube--mini-3 .cube__face--top,   .cube--mini-4 .cube__face--right { animation-name: cube-face-fade, cube-glow-olive; }
 .cube--mini-1 .cube__face--front, .cube--mini-1 .cube__face--back,
 .cube--mini-1 .cube__face--left,  .cube--mini-1 .cube__face--bottom,
 .cube--mini-2 .cube__face--front, .cube--mini-2 .cube__face--back,
@@ -577,7 +596,7 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
 .cube--mini-3 .cube__face--front, .cube--mini-3 .cube__face--back,
 .cube--mini-3 .cube__face--left,  .cube--mini-3 .cube__face--bottom,
 .cube--mini-4 .cube__face--front, .cube--mini-4 .cube__face--back,
-.cube--mini-4 .cube__face--left,  .cube--mini-4 .cube__face--top { animation-name: cube-glow-lime; }
+.cube--mini-4 .cube__face--left,  .cube--mini-4 .cube__face--top { animation-name: cube-face-fade, cube-glow-lime; }
 
 .section--has-artifact { position: relative; overflow: hidden; }
 
