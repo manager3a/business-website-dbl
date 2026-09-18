@@ -322,57 +322,64 @@
           what it takes to move forward, and what you'll have in hand at the end of it.
         </p>
 
-        <ol class="process">
-          <li class="process__item reveal">
-            <div class="process__marker"><span>01</span></div>
-            <div class="process__body">
-              <h3 class="process__title">Idea Diagnosis</h3>
-              <p class="process__question">&ldquo;Does this idea have real potential to become a business?&rdquo;</p>
-              <p class="process__text">We evaluate the proposal, the problem, the customer, the differentiation and the global reach.</p>
-              <p class="process__result"><strong>Result:</strong> Initial diagnosis and recommendation.</p>
+        <div class="orbital reveal" data-orbital>
+          <div class="orbital__stage">
+            <div class="orbital__hub" aria-hidden="true">
+              <span class="orbital__hub-ring"></span>
+              <span class="orbital__hub-ring orbital__hub-ring--2"></span>
+              <span class="orbital__hub-dot"></span>
             </div>
-          </li>
-          <li class="process__item reveal">
-            <div class="process__marker"><span>02</span></div>
-            <div class="process__body">
-              <h3 class="process__title">Market Validation</h3>
-              <p class="process__question">&ldquo;Is there a real commercial opportunity here?&rdquo;</p>
-              <p class="process__text">Research, competition analysis, demand testing, interviews and willingness-to-pay signals.</p>
-              <p class="process__result"><strong>Result:</strong> Evidence of the commercial opportunity.</p>
+            <div class="orbital__track">
+              <button type="button" class="orbital__node"
+                data-title="Idea Diagnosis"
+                data-question="&ldquo;Does this idea have real potential to become a business?&rdquo;"
+                data-text="We evaluate the proposal, the problem, the customer, the differentiation and the global reach."
+                data-result="<strong>Result:</strong> Initial diagnosis and recommendation.">
+                <span class="orbital__node-num">01</span>
+                <span class="orbital__node-label">Idea Diagnosis</span>
+              </button>
+              <button type="button" class="orbital__node"
+                data-title="Market Validation"
+                data-question="&ldquo;Is there a real commercial opportunity here?&rdquo;"
+                data-text="Research, competition analysis, demand testing, interviews and willingness-to-pay signals."
+                data-result="<strong>Result:</strong> Evidence of the commercial opportunity.">
+                <span class="orbital__node-num">02</span>
+                <span class="orbital__node-label">Market Validation</span>
+              </button>
+              <button type="button" class="orbital__node"
+                data-title="Business Design"
+                data-question="&ldquo;What does a viable business around this idea look like — and do we build it together?&rdquo;"
+                data-text="Revenue model, value proposition, cost structure, channels and strategy. If it makes sense for both sides, this is also where we define a potential Venture Partnership: roles, responsibilities, equity participation, IP and profit distribution."
+                data-result="<strong>Result:</strong> A viable business model — and, where applicable, a partnership agreement to move into development.">
+                <span class="orbital__node-num">03</span>
+                <span class="orbital__node-label">Business Design</span>
+              </button>
+              <button type="button" class="orbital__node"
+                data-title="Development &amp; Launch"
+                data-question="&ldquo;How do we turn the validated idea into a real business?&rdquo;"
+                data-text="Brand, prototype or MVP, digital presence, automation, marketing and sales."
+                data-result="<strong>Result:</strong> A business ready to be tested in the market.">
+                <span class="orbital__node-num">04</span>
+                <span class="orbital__node-label">Development &amp; Launch</span>
+              </button>
+              <button type="button" class="orbital__node"
+                data-title="Global Scaling"
+                data-question="&ldquo;How do we grow and expand a business that already works?&rdquo;"
+                data-text="Optimization, geographic expansion, new channels, alliances and investment readiness."
+                data-result="<strong>Result:</strong> A business prepared to grow.">
+                <span class="orbital__node-num">05</span>
+                <span class="orbital__node-label">Global Scaling</span>
+              </button>
             </div>
-          </li>
-          <li class="process__item reveal">
-            <div class="process__marker"><span>03</span></div>
-            <div class="process__body">
-              <h3 class="process__title">Business Design</h3>
-              <p class="process__question">&ldquo;What does a viable business around this idea look like — and do we build it together?&rdquo;</p>
-              <p class="process__text">
-                Revenue model, value proposition, cost structure, channels and strategy. If it makes sense for both
-                sides, this is also where we define a potential <strong>Venture Partnership</strong>: roles,
-                responsibilities, equity participation, IP and profit distribution.
-              </p>
-              <p class="process__result"><strong>Result:</strong> A viable business model — and, where applicable, a partnership agreement to move into development.</p>
-            </div>
-          </li>
-          <li class="process__item reveal">
-            <div class="process__marker"><span>04</span></div>
-            <div class="process__body">
-              <h3 class="process__title">Development &amp; Launch</h3>
-              <p class="process__question">&ldquo;How do we turn the validated idea into a real business?&rdquo;</p>
-              <p class="process__text">Brand, prototype or MVP, digital presence, automation, marketing and sales.</p>
-              <p class="process__result"><strong>Result:</strong> A business ready to be tested in the market.</p>
-            </div>
-          </li>
-          <li class="process__item reveal">
-            <div class="process__marker"><span>05</span></div>
-            <div class="process__body">
-              <h3 class="process__title">Global Scaling</h3>
-              <p class="process__question">&ldquo;How do we grow and expand a business that already works?&rdquo;</p>
-              <p class="process__text">Optimization, geographic expansion, new channels, alliances and investment readiness.</p>
-              <p class="process__result"><strong>Result:</strong> A business prepared to grow.</p>
-            </div>
-          </li>
-        </ol>
+          </div>
+          <div class="orbital__card" data-orbital-card hidden>
+            <button type="button" class="orbital__card-close" data-orbital-close aria-label="Close">&times;</button>
+            <h3 class="orbital__card-title"></h3>
+            <p class="orbital__card-question"></p>
+            <p class="orbital__card-text"></p>
+            <p class="orbital__card-result"></p>
+          </div>
+        </div>
       </div>
     </section>
 
