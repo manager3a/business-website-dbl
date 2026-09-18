@@ -290,10 +290,22 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
 }
 .navbar__links a {
   position: relative;
-  padding-block: 0.4rem;
+  display: inline-block;
+  padding: 0.5rem 0.9rem;
   transition: color var(--duration-base) var(--ease-signature);
 }
+.navbar__links a::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border: 1px solid var(--color-accent);
+  opacity: 0;
+  transform: scale(0.85);
+  transition: opacity var(--duration-base) var(--ease-signature), transform var(--duration-base) var(--ease-signature);
+  pointer-events: none;
+}
 .navbar__links a:hover { color: var(--color-accent); }
+.navbar__links a:hover::before { opacity: 1; transform: scale(1); }
 
 .navbar__cta { padding: 0.7rem 1.5rem; min-height: 42px; font-size: 0.88rem; }
 
@@ -338,27 +350,69 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
 }
 .hero__bg-svg { width: 100%; height: 100%; }
 
-/* Signature brand artifact — a loose cluster of chevrons (the DBL isotype
-   motif) that drift and rotate independently, echoing the logo without
-   repeating it literally. Pure CSS keyframes, no JS; the global
-   prefers-reduced-motion rule above already freezes these. */
-.artifact__piece {
-  transform-box: fill-box;
-  transform-origin: center;
-  animation-name: artifact-float;
-  animation-timing-function: var(--ease-signature);
-  animation-iteration-count: infinite;
+/* Signature brand artifact — a small tower of real 3D glass cubes (CSS
+   transform-style: preserve-3d, no WebGL/JS/libraries) that spins slowly
+   and continuously, with chromatic-accent edges echoing light dispersion
+   through glass. Pure CSS keyframes; the global prefers-reduced-motion
+   rule above already freezes these. */
+.artifact-3d {
+  position: absolute;
+  right: 4%;
+  top: 50%;
+  width: 300px;
+  height: 420px;
+  transform: translateY(-52%);
+  perspective: 1400px;
 }
-.artifact__piece--1 { animation-duration: 7.5s; animation-delay: 0s; }
-.artifact__piece--2 { animation-duration: 6.2s; animation-delay: -1.5s; }
-.artifact__piece--3 { animation-duration: 8.1s; animation-delay: -3s; }
-.artifact__piece--4 { animation-duration: 6.8s; animation-delay: -0.8s; }
-.artifact__piece--5 { animation-duration: 9s; animation-delay: -4.2s; }
-.artifact__piece--6 { animation-duration: 7.2s; animation-delay: -2.1s; }
 
-@keyframes artifact-float {
-  0%, 100% { transform: translateY(0) rotate(0deg); }
-  50% { transform: translateY(-18px) rotate(4deg); }
+.artifact-3d__spin {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  animation: artifact-spin 16s var(--ease-signature) infinite;
+}
+
+@keyframes artifact-spin {
+  0%   { transform: rotateY(0deg) rotateX(-8deg); }
+  50%  { transform: rotateY(180deg) rotateX(8deg); }
+  100% { transform: rotateY(360deg) rotateX(-8deg); }
+}
+
+.cube {
+  position: absolute;
+  width: 108px;
+  height: 108px;
+  transform-style: preserve-3d;
+}
+.cube--1 { left: 60px;  top: 10px; }
+.cube--2 { left: 150px; top: 90px; }
+.cube--3 { left: 60px;  top: 190px; }
+.cube--4 { left: 150px; top: 270px; }
+
+.cube__face {
+  position: absolute;
+  inset: 0;
+  border: 2px solid var(--color-accent);
+  background: rgba(20, 24, 12, 0.25);
+  box-shadow: 0 0 14px rgba(225, 255, 60, 0.25);
+}
+.cube__face--front  { transform: translateZ(54px); }
+.cube__face--back   { transform: rotateY(180deg) translateZ(54px); }
+.cube__face--right  { transform: rotateY(90deg) translateZ(54px); }
+.cube__face--left   { transform: rotateY(-90deg) translateZ(54px); }
+.cube__face--top    { transform: rotateX(90deg) translateZ(54px); }
+.cube__face--bottom { transform: rotateX(-90deg) translateZ(54px); }
+
+/* One accent face per cube, echoing the reference's chromatic-dispersion
+   edges — kept within DBL's own palette (olive/white), not new colors. */
+.cube--2 .cube__face--right, .cube--4 .cube__face--right {
+  border-color: var(--color-accent-alt);
+  box-shadow: 0 0 14px rgba(181, 212, 9, 0.3);
+}
+.cube--1 .cube__face--top, .cube--3 .cube__face--top {
+  border-color: var(--color-white);
+  box-shadow: 0 0 14px rgba(255, 255, 255, 0.2);
 }
 
 .hero__content {
@@ -1003,6 +1057,13 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
 
 /* Mobile nav breakpoint */
 @media (max-width: 768px) {
+  .artifact-3d {
+    right: 50%;
+    top: 8%;
+    transform: translateX(50%) scale(0.55);
+    opacity: 0.5;
+  }
+
   .navbar__toggle { display: flex; }
 
   .navbar__nav {
