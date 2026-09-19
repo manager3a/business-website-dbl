@@ -426,15 +426,16 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
 /* Signature brand artifact — a real 3D Rubik's cube built from 26 small
    cubies (CSS transform-style: preserve-3d, no WebGL/JS/libraries),
    restyled entirely in DBL's own palette instead of the classic 6
-   colors. Each horizontal row of cubies sits in its own preserve-3d
-   group that spins independently around the cube's own vertical axis —
-   the "rows turning, hunting for a combination" motion from the
-   reference video — while the whole cube also tumbles through space.
-   Lesson learned the hard way in earlier rounds: opacity/filter must
-   never sit on an ancestor of the preserve-3d tree (it silently
-   flattens everything inside into 2D), so every fade below lives on
-   the leaf .rubik3d__face elements, and every animated group only ever
-   animates `transform`. */
+   colors. Cubies are grouped first by horizontal row (top/mid/bottom,
+   spinning around the vertical Y axis) and, nested inside each row, by
+   vertical column (left/mid/right, spinning around the horizontal X
+   axis) — so the cube turns both horizontally AND vertically at once,
+   the way an actual Rubik's cube is solved, on top of the whole cube
+   also tumbling through space. Lesson learned the hard way in earlier
+   rounds: opacity/filter must never sit on an ancestor of the
+   preserve-3d tree (it silently flattens everything inside into 2D),
+   so every fade below lives on the leaf .rubik3d__face elements, and
+   every animated group only ever animates `transform`. */
 .rubik3d__cube {
   position: relative;
   width: 100%;
@@ -460,6 +461,19 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
 .rubik3d__row--top    { animation: rubik-row-spin 9s linear infinite; }
 .rubik3d__row--mid    { animation: rubik-row-spin 13s linear infinite reverse; }
 .rubik3d__row--bottom { animation: rubik-row-spin 7s linear infinite; animation-delay: -3s; }
+
+.rubik3d__col {
+  position: absolute;
+  inset: 0;
+  transform-style: preserve-3d;
+}
+@keyframes rubik-col-spin {
+  0%   { transform: rotateX(0deg); }
+  100% { transform: rotateX(360deg); }
+}
+.rubik3d__col--left  { animation: rubik-col-spin 11s linear infinite; }
+.rubik3d__col--mid   { animation: rubik-col-spin 16s linear infinite reverse; }
+.rubik3d__col--right { animation: rubik-col-spin 8.5s linear infinite; animation-delay: -5s; }
 
 .rubik3d__cubie {
   position: absolute;
@@ -535,6 +549,7 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
 .rubik3d--corner-right-1 .rubik3d__cube { animation-duration: 18s; animation-delay: -9s; }
 .rubik3d--corner-left-2  .rubik3d__cube { animation-duration: 24s; animation-delay: -13s; }
 .rubik3d--corner-right-2 .rubik3d__cube { animation-duration: 19s; animation-delay: -2s; }
+.rubik3d--corner-center  .rubik3d__cube { animation-duration: 21s; animation-delay: -7s; }
 
 /* Bottom-anchored only: every section's heading/body copy sits at the
    top, so the reliably empty margin is at the bottom, below the last
@@ -543,6 +558,10 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
 .rubik3d--corner-right-1 { right: 2%; left: auto; bottom: 3%; top: auto; }
 .rubik3d--corner-left-2  { left: 1.5%; right: auto; bottom: 4%; top: auto; }
 .rubik3d--corner-right-2 { right: 2%; left: auto; bottom: 4%; top: auto; }
+/* Centered horizontally in the same reliably-empty bottom margin — the
+   full-width band below a section's content, not the vertical middle
+   where headings/body copy live — so it never sits on top of text. */
+.rubik3d--corner-center  { left: 50%; right: auto; bottom: 2%; top: auto; transform: translateX(-50%); }
 
 .section--has-artifact { position: relative; overflow: hidden; }
 
