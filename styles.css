@@ -581,9 +581,9 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
    top, so the reliably empty margin is at the bottom, below the last
    piece of content and before the section's own bottom padding ends. */
 .rubik3d--corner-left-1  { left: 1.5%; right: auto; bottom: 3%; top: auto; }
-.rubik3d--corner-right-1 { right: 2%; left: auto; bottom: 3%; top: auto; }
+.rubik3d--corner-right-1 { right: 7%; left: auto; bottom: 3%; top: auto; }
 .rubik3d--corner-left-2  { left: 1.5%; right: auto; bottom: 4%; top: auto; }
-.rubik3d--corner-right-2 { right: 2%; left: auto; bottom: 4%; top: auto; }
+.rubik3d--corner-right-2 { right: 7%; left: auto; bottom: 4%; top: auto; }
 /* Centered horizontally in the same reliably-empty bottom margin — the
    full-width band below a section's content, not the vertical middle
    where headings/body copy live — so it never sits on top of text. */
@@ -864,21 +864,40 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
   padding: 0 0.4rem;
 }
 
+/* A thin temporary line from the clicked node out to its card, redrawn
+   every frame while the card is open so it tracks the node's slow
+   orbit; both live inside .orbital__stage and share the nodes' own
+   coordinate system (top/left 50%, then an inline translate). */
+.orbital__line {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--color-accent), rgba(225, 255, 60, 0.15));
+  transform-origin: 0 50%;
+  pointer-events: none;
+  z-index: 2;
+}
+
 .orbital__card {
-  max-width: 640px;
-  margin: var(--space-xl) auto 0;
-  padding: var(--space-lg);
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 260px;
+  padding: var(--space-md);
   background: var(--color-surface);
-  border: 1px solid var(--color-border);
+  border: 1px solid var(--color-accent);
   border-radius: var(--radius-md);
-  position: relative;
+  box-shadow: 0 0 22px rgba(225, 255, 60, 0.15);
+  z-index: 3;
 }
 .orbital__card-close {
   position: absolute;
-  top: var(--space-sm);
-  right: var(--space-sm);
-  width: 32px;
-  height: 32px;
+  top: var(--space-xs);
+  right: var(--space-xs);
+  width: 28px;
+  height: 28px;
   border: 1px solid var(--color-border);
   background: transparent;
   color: var(--color-text-muted);
@@ -888,18 +907,22 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
   transition: border-color 0.3s var(--ease-signature), color 0.3s var(--ease-signature);
 }
 .orbital__card-close:hover { border-color: var(--color-accent); color: var(--color-accent); }
-.orbital__card-title { font-size: 1.35rem; margin-bottom: 0.5rem; padding-right: 2rem; }
+.orbital__card-title { font-size: 1.05rem; margin-bottom: 0.4rem; padding-right: 1.8rem; }
 .orbital__card-question {
   font-family: var(--font-heading);
   font-style: italic;
   font-weight: 500;
   color: var(--color-white);
-  font-size: 1rem;
-  margin-bottom: 0.6rem;
+  font-size: 0.85rem;
+  margin-bottom: 0.5rem;
 }
-.orbital__card-text { color: var(--color-text-muted); font-size: 0.96rem; margin-bottom: 0.6rem; }
-.orbital__card-result { font-size: 0.9rem; color: var(--color-accent-alt); }
+.orbital__card-text { color: var(--color-text-muted); font-size: 0.82rem; margin-bottom: 0.5rem; }
+.orbital__card-result { font-size: 0.78rem; color: var(--color-accent-alt); }
 .orbital__card-result strong { color: var(--color-accent); }
+
+@media (max-width: 640px) {
+  .orbital__card { width: 220px; padding: var(--space-sm); }
+}
 
 @media (max-width: 640px) {
   .orbital__stage { max-width: 448px; }
@@ -1296,11 +1319,19 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
 
 /* Mobile nav breakpoint */
 @media (max-width: 768px) {
+  /* On mobile the cube can't float behind the headline (no side margin
+     to keep it clear of the text), so it drops out of the absolute
+     background layer and becomes a normal stacked block instead: cube
+     first, hero text below, never overlapping. */
+  .hero { flex-direction: column; }
   .rubik3d--hero {
-    right: 50%;
-    left: auto;
-    top: 4%;
-    transform: translateX(50%) scale(0.5);
+    position: static;
+    width: 150px;
+    height: 150px;
+    margin-bottom: var(--space-md);
+    perspective: 560px;
+    --cubie-size: 46px;
+    transform: none;
   }
 
   /* Single-column mobile layout leaves no side margin at all, so the

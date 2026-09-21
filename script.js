@@ -159,13 +159,18 @@
 
   /* ---------- Orbital timeline (Process section) ----------
      Nodes are positioned every frame from a slowly-advancing angle;
-     clicking a node expands its detail card below the stage. Positions
-     are plain inline transforms, so prefers-reduced-motion just skips
-     the per-frame advance and leaves the nodes at their initial spot. */
+     clicking a node opens its detail card just outside the ring, at
+     the same angle as the node but a bit further from the hub, linked
+     to it by a thin temporary line. Both card and line are re-anchored
+     every frame while open, so they keep tracking the node as it
+     drifts. Positions are plain inline transforms, so prefers-reduced-
+     motion just skips the per-frame advance and leaves everything at
+     its initial spot. */
   document.querySelectorAll('[data-orbital]').forEach(function (root) {
     var stage = root.querySelector('.orbital__stage');
     var nodes = Array.prototype.slice.call(root.querySelectorAll('.orbital__node'));
     var card = root.querySelector('[data-orbital-card]');
+    var line = root.querySelector('[data-orbital-line]');
     if (!stage || !nodes.length || !card) return;
 
     var cardTitle = card.querySelector('.orbital__card-title');
@@ -179,18 +184,52 @@
     var rafId = null;
 
     function radius() {
-      return stage.clientWidth <= 480 ? 165 : 238;
+      return stage.clientWidth <= 480 ? 130 : 190;
+    }
+
+    function nodeAngleRad(i) {
+      var step = 360 / nodes.length;
+      return ((angle + step * i) * Math.PI) / 180;
     }
 
     function layout() {
       var r = radius();
-      var step = 360 / nodes.length;
       nodes.forEach(function (node, i) {
-        var rad = ((angle + step * i) * Math.PI) / 180;
+        var rad = nodeAngleRad(i);
         var x = Math.cos(rad) * r;
         var y = Math.sin(rad) * r;
         node.style.transform = 'translate(' + x.toFixed(2) + 'px, ' + y.toFixed(2) + 'px)';
       });
+      if (activeIndex !== -1) updateCardAnchor();
+    }
+
+    function updateCardAnchor() {
+      var r = radius();
+      var rad = nodeAngleRad(activeIndex);
+      var nodeX = Math.cos(rad) * r;
+      var nodeY = Math.sin(rad) * r;
+      var cardR = r + (stage.clientWidth <= 480 ? 150 : 230);
+      var cardX = Math.cos(rad) * cardR;
+      var cardY = Math.sin(rad) * cardR;
+
+      // Keep the card's own box from sliding too far past the stage's
+      // edge — clamp its center within the stage bounds plus a margin.
+      var half = card.offsetWidth / 2 || 130;
+      var stageHalf = stage.clientWidth / 2;
+      var limit = stageHalf + half + 12;
+      var clampedX = Math.max(-limit, Math.min(limit, cardX));
+      var clampedY = Math.max(-limit, Math.min(limit, cardY));
+
+      card.style.transform = 'translate(calc(-50% + ' + clampedX.toFixed(2) + 'px), calc(-50% + ' + clampedY.toFixed(2) + 'px))';
+
+      if (line) {
+        var dx = clampedX - nodeX;
+        var dy = clampedY - nodeY;
+        var dist = Math.sqrt(dx * dx + dy * dy);
+        var lineAngleDeg = (Math.atan2(dy, dx) * 180) / Math.PI;
+        line.style.width = dist.toFixed(2) + 'px';
+        line.style.transform = 'translate(' + nodeX.toFixed(2) + 'px, ' + nodeY.toFixed(2) + 'px) rotate(' + lineAngleDeg.toFixed(2) + 'deg)';
+      }
     }
 
     function tick() {
@@ -213,12 +252,15 @@
       cardText.textContent = node.getAttribute('data-text') || '';
       cardResult.innerHTML = node.getAttribute('data-result') || '';
       card.hidden = false;
+      if (line) line.hidden = false;
+      updateCardAnchor();
     }
 
     function closeCard() {
       activeIndex = -1;
       nodes.forEach(function (n) { n.classList.remove('is-active'); });
       card.hidden = true;
+      if (line) line.hidden = true;
     }
 
     nodes.forEach(function (node, i) {
