@@ -296,7 +296,7 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
   background: var(--color-accent);
   color: var(--color-on-accent);
   font-family: var(--font-heading);
-  font-weight: 500;
+  font-weight: 700;
   font-size: 0.95rem;
   letter-spacing: 0.02em;
   transition: background var(--duration-base) var(--ease-signature);
@@ -359,18 +359,7 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
   padding: 0.5rem 0.9rem;
   transition: color var(--duration-base) var(--ease-signature);
 }
-.navbar__links a::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  border: 1px solid var(--color-accent);
-  opacity: 0;
-  transform: scale(0.85);
-  transition: opacity var(--duration-base) var(--ease-signature), transform var(--duration-base) var(--ease-signature);
-  pointer-events: none;
-}
 .navbar__links a:hover { color: var(--color-accent); }
-.navbar__links a:hover::before { opacity: 1; transform: scale(1); }
 
 .navbar__cta { padding: 0.7rem 1.5rem; min-height: 42px; font-size: 0.88rem; }
 .navbar__cta.btn--spin { padding: 1px; min-height: 42px; }
@@ -575,8 +564,6 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
 .rubik3d--corner-left-2  .rubik3d__col  { animation-delay: -13s; }
 .rubik3d--corner-right-2 .rubik3d__row,
 .rubik3d--corner-right-2 .rubik3d__col  { animation-delay: -2s; }
-.rubik3d--corner-center  .rubik3d__row,
-.rubik3d--corner-center  .rubik3d__col  { animation-delay: -7s; }
 
 /* Bottom-anchored only: every section's heading/body copy sits at the
    top, so the reliably empty margin is at the bottom, below the last
@@ -585,10 +572,6 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
 .rubik3d--corner-right-1 { right: 7%; left: auto; bottom: 3%; top: auto; }
 .rubik3d--corner-left-2  { left: 1.5%; right: auto; bottom: 4%; top: auto; }
 .rubik3d--corner-right-2 { right: 7%; left: auto; bottom: 4%; top: auto; }
-/* Centered horizontally in the same reliably-empty bottom margin — the
-   full-width band below a section's content, not the vertical middle
-   where headings/body copy live — so it never sits on top of text. */
-.rubik3d--corner-center  { left: 50%; right: auto; bottom: 8%; top: auto; transform: translateX(-50%); }
 
 .section--has-artifact { position: relative; overflow: hidden; }
 
@@ -741,7 +724,12 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
   -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='3'%3E%3Cpath d='M5 12l5 5L19 7'/%3E%3C/svg%3E") center/70% no-repeat;
 }
 
-.solutions-list { display: flex; flex-direction: column; gap: var(--space-lg); }
+.solutions-list {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-md);
+  margin-top: var(--space-xl);
+}
 
 /* Each solution gets its own card, revealed individually as the user
    scrolls to it (via the shared .reveal/IntersectionObserver system).
@@ -772,10 +760,10 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
     linear-gradient(160deg, #0d0d0d, #050505);
   border-bottom: 1px solid var(--color-border);
 }
-.solution-card__tag,
-.solution-card__step {
+.solution-card__tag {
   position: absolute;
   top: var(--space-sm);
+  left: var(--space-sm);
   font-family: var(--font-heading);
   font-size: 0.66rem;
   font-weight: 700;
@@ -783,23 +771,23 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
   text-transform: uppercase;
   padding: 0.3rem 0.65rem;
   border-radius: 999px;
-  border: 1px solid var(--color-border);
+  background: var(--color-accent);
+  border: 1px solid var(--color-accent);
+  color: var(--color-on-accent);
 }
-.solution-card__tag { left: var(--space-sm); background: var(--color-accent); border-color: var(--color-accent); color: var(--color-on-accent); }
-.solution-card__step { right: var(--space-sm); color: var(--color-text-muted); }
 
 .solution-card__icon {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 68px;
-  height: 68px;
-  margin-top: var(--space-md);
+  width: 88px;
+  height: 88px;
+  margin-top: var(--space-lg);
   border-radius: 50%;
   background: rgba(225, 255, 60, 0.08);
   border: 1px solid rgba(225, 255, 60, 0.25);
 }
-.solution-card__icon svg { width: 32px; height: 32px; }
+.solution-card__icon svg { width: 42px; height: 42px; }
 
 .solution-card__body { padding: var(--space-md) var(--space-lg) var(--space-lg); }
 .solution-card__title {
@@ -1263,6 +1251,26 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
 .lang-switch__sep { color: var(--color-border); }
 
 /* =========================================================
+   INTERACTIVE GLOBE (Our Lab section) — canvas-drawn, DBL-palette
+   globe with arcs tracing Miami -> Latin America -> the rest of the
+   world. Draggable to rotate; see the initGlobes() block in script.js.
+   ========================================================= */
+.globe {
+  width: 100%;
+  max-width: 560px;
+  aspect-ratio: 1 / 1;
+  margin: var(--space-xl) auto 0;
+}
+.globe__canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  cursor: grab;
+  touch-action: none;
+}
+.globe__canvas:active { cursor: grabbing; }
+
+/* =========================================================
    PAGE LOADER — shown on every page load and briefly before an
    internal navigation, using DBL's own two-chevron icon. Each chevron
    rises into place and fades, one after the other (green then white),
@@ -1391,6 +1399,7 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
 /* Tablet and below */
 @media (max-width: 1024px) {
   .grid--3 { grid-template-columns: repeat(2, 1fr); }
+  .solutions-list { grid-template-columns: repeat(2, 1fr); }
   .footer__inner { grid-template-columns: 1fr 1fr 1fr; }
   .footer__brand { grid-column: 1 / -1; margin-bottom: var(--space-md); }
   .build { grid-template-columns: 1fr; }
@@ -1460,6 +1469,7 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
 }
 
 @media (max-width: 480px) {
+  .solutions-list { grid-template-columns: 1fr; }
   .footer__inner { grid-template-columns: 1fr; }
   .hero__actions { flex-direction: column; align-items: stretch; }
   .hero__actions .btn { width: 100%; }
