@@ -228,7 +228,6 @@
     var cardQuestion = card.querySelector('.orbital__card-question');
     var cardText = card.querySelector('.orbital__card-text');
     var cardResult = card.querySelector('.orbital__card-result');
-    var closeBtn = card.querySelector('[data-orbital-close]');
 
     var angle = -90;
     var activeIndex = -1;
@@ -315,16 +314,15 @@
     }
 
     nodes.forEach(function (node, i) {
-      node.addEventListener('click', function () {
-        if (activeIndex === i) {
-          closeCard();
-        } else {
-          openCard(node, i);
-        }
+      node.addEventListener('mouseenter', function () { openCard(node, i); });
+      node.addEventListener('mouseleave', function () {
+        if (activeIndex === i) closeCard();
+      });
+      node.addEventListener('focus', function () { openCard(node, i); });
+      node.addEventListener('blur', function () {
+        if (activeIndex === i) closeCard();
       });
     });
-
-    if (closeBtn) closeBtn.addEventListener('click', closeCard);
 
     window.addEventListener('resize', layout, { passive: true });
   });
@@ -390,7 +388,11 @@
     var MARKER_COLOR = 'rgba(255, 255, 255, 1)';
     var AUTO_ROTATE_SPEED = 0.0018;
 
-    var rotY = 0.5, rotX = 0.25;
+    // Starting orientation: Miami centered and facing the viewer, with
+    // Mexico City/Bogota/Sao Paulo fanning up-left and the Madrid/Rome/
+    // London cluster low on the left edge — matches the requested first
+    // frame — before the usual auto-rotation takes over.
+    var rotY = 2.98, rotX = 0.46;
     var time = 0;
     var drag = { active: false, startX: 0, startY: 0, startRotY: 0, startRotX: 0 };
     var rafId = null;

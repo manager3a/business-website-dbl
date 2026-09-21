@@ -526,12 +526,12 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
 
 .rubik3d--hero {
   position: absolute;
-  right: 3%;
-  top: 7%;
-  width: 190px;
-  height: 190px;
-  perspective: 780px;
-  --cubie-size: 63px;
+  right: 4%;
+  top: 5%;
+  width: 170px;
+  height: 170px;
+  perspective: 900px;
+  --cubie-size: 56px;
 }
 /* Opacity lives on the leaf faces, not on .rubik3d--hero itself — that
    element is the preserve-3d perspective root, and opacity there would
@@ -569,8 +569,8 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
    top, so the reliably empty margin is at the bottom, below the last
    piece of content and before the section's own bottom padding ends. */
 .rubik3d--corner-left-1  { left: 1.5%; right: auto; bottom: 3%; top: auto; }
-.rubik3d--corner-right-1 { right: 7%; left: auto; bottom: 3%; top: auto; }
-.rubik3d--corner-left-2  { left: 1.5%; right: auto; bottom: 4%; top: auto; }
+.rubik3d--corner-right-1 { right: 7%; left: auto; top: 20%; bottom: auto; }
+.rubik3d--corner-left-2  { left: 5%; right: auto; bottom: 4%; top: auto; }
 .rubik3d--corner-right-2 { right: 7%; left: auto; bottom: 4%; top: auto; }
 
 .section--has-artifact { position: relative; overflow: hidden; }
@@ -630,8 +630,18 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
 /* Build With Us sits directly above FAQ with no visual break between them
    (same dark tone family), so the usual double section padding reads as an
    empty gap — tighten just this boundary. */
-#build-with-us { padding-bottom: 0; }
+#build-with-us { padding-top: var(--space-xl); padding-bottom: 0; }
 #faq { padding-top: var(--space-xl); }
+
+/* The stacked top+bottom section padding reads as an oversized empty
+   gap above these two headings — tighten just their top padding. */
+#focus-areas { padding-top: var(--space-xl); }
+#process { padding-top: var(--space-xl); padding-bottom: var(--space-lg); }
+
+/* The globe fills most of #about's own visual weight, so the usual
+   bottom section padding on top of it reads as an oversized empty
+   gap before "Build With Us" — tighten it. */
+#about { padding-bottom: var(--space-lg); }
 
 .section__title {
   font-size: var(--text-heading-lg);
@@ -653,6 +663,7 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
   font-size: 1.1rem;
 }
 .section__lead--tight { margin-bottom: 0; }
+.section__lead--gap-sm { margin-bottom: var(--space-md); }
 
 /* =========================================================
    GRID / CARDS
@@ -708,15 +719,25 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
   color: var(--color-text-muted);
   font-size: 0.96rem;
 }
-.checklist li::before {
+/* Two-tone DBL chevron mark: the top (green) and bottom (white)
+   chevrons are each their own pseudo-element/mask so they can carry
+   different colors, exactly like the real logo. */
+.checklist li::before,
+.checklist li::after {
   content: '';
   position: absolute;
   left: 0; top: 0.35rem;
   width: 18px; height: 18px;
-  border-radius: 5px;
+}
+.checklist li::before {
   background: var(--color-accent);
-  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='3'%3E%3Cpath d='M5 12l5 5L19 7'/%3E%3C/svg%3E") center/70% no-repeat;
-  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='3'%3E%3Cpath d='M5 12l5 5L19 7'/%3E%3C/svg%3E") center/70% no-repeat;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 448.15 452.19'%3E%3Cpath d='M391.45,135.74,234,37a6.91,6.91,0,0,0-7.3,0L69.05,135.74a9.22,9.22,0,0,0-4.41,7.79V250.89a3.12,3.12,0,0,0,4.82,2.48L226.6,154.83a6.91,6.91,0,0,1,7.3,0L391,253.37a3.12,3.12,0,0,0,4.81-2.48V143.53A9.21,9.21,0,0,0,391.45,135.74Z'/%3E%3C/svg%3E") center/62% no-repeat;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 448.15 452.19'%3E%3Cpath d='M391.45,135.74,234,37a6.91,6.91,0,0,0-7.3,0L69.05,135.74a9.22,9.22,0,0,0-4.41,7.79V250.89a3.12,3.12,0,0,0,4.82,2.48L226.6,154.83a6.91,6.91,0,0,1,7.3,0L391,253.37a3.12,3.12,0,0,0,4.81-2.48V143.53A9.21,9.21,0,0,0,391.45,135.74Z'/%3E%3C/svg%3E") center/62% no-repeat;
+}
+.checklist li::after {
+  background: var(--color-white);
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 448.15 452.19'%3E%3Cpath d='M391.45,298.13,234,199.37a6.91,6.91,0,0,0-7.3,0L69.05,298.13a9.22,9.22,0,0,0-4.41,7.79V413.28a3.12,3.12,0,0,0,4.82,2.48L226.6,317.22a6.91,6.91,0,0,1,7.3,0L391,415.76a3.12,3.12,0,0,0,4.81-2.48V305.92A9.21,9.21,0,0,0,391.45,298.13Z'/%3E%3C/svg%3E") center/62% no-repeat;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 448.15 452.19'%3E%3Cpath d='M391.45,298.13,234,199.37a6.91,6.91,0,0,0-7.3,0L69.05,298.13a9.22,9.22,0,0,0-4.41,7.79V413.28a3.12,3.12,0,0,0,4.82,2.48L226.6,317.22a6.91,6.91,0,0,1,7.3,0L391,415.76a3.12,3.12,0,0,0,4.81-2.48V305.92A9.21,9.21,0,0,0,391.45,298.13Z'/%3E%3C/svg%3E") center/62% no-repeat;
 }
 
 .solutions-list {
@@ -798,7 +819,7 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
    expand its detail card. No new dependencies (no React/Tailwind/shadcn),
    styled entirely with DBL's own palette.
    ========================================================= */
-.orbital { margin-top: var(--space-2xl); }
+.orbital { margin-top: 0; }
 
 .orbital__stage {
   position: relative;
@@ -881,7 +902,7 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
   font-size: 1.2rem;
 }
 .orbital__node-label {
-  font-size: 0.82rem;
+  font-size: 0.7rem;
   text-transform: uppercase;
   letter-spacing: 0.04em;
   text-align: center;
@@ -917,22 +938,7 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
   box-shadow: 0 0 22px rgba(225, 255, 60, 0.15);
   z-index: 3;
 }
-.orbital__card-close {
-  position: absolute;
-  top: var(--space-xs);
-  right: var(--space-xs);
-  width: 28px;
-  height: 28px;
-  border: 1px solid var(--color-border);
-  background: transparent;
-  color: var(--color-text-muted);
-  font-size: 1.1rem;
-  line-height: 1;
-  cursor: pointer;
-  transition: border-color 0.3s var(--ease-signature), color 0.3s var(--ease-signature);
-}
-.orbital__card-close:hover { border-color: var(--color-accent); color: var(--color-accent); }
-.orbital__card-title { font-size: 1.05rem; margin-bottom: 0.4rem; padding-right: 1.8rem; }
+.orbital__card-title { font-size: 1.05rem; margin-bottom: 0.4rem; }
 .orbital__card-question {
   font-family: var(--font-heading);
   font-style: italic;
@@ -953,7 +959,7 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
   .orbital__stage { max-width: 448px; }
   .orbital__hub { width: 95px; height: 95px; }
   .orbital__node { width: 92px; height: 92px; margin: -46px 0 0 -46px; }
-  .orbital__node-label { font-size: 0.72rem; }
+  .orbital__node-label { font-size: 0.62rem; }
 }
 
 /* =========================================================
