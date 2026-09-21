@@ -228,7 +228,6 @@
     var cardQuestion = card.querySelector('.orbital__card-question');
     var cardText = card.querySelector('.orbital__card-text');
     var cardResult = card.querySelector('.orbital__card-result');
-    var closeBtn = card.querySelector('[data-orbital-close]');
 
     var angle = -90;
     var activeIndex = -1;
@@ -324,8 +323,6 @@
         if (activeIndex === i) closeCard();
       });
     });
-
-    if (closeBtn) closeBtn.addEventListener('click', closeCard);
 
     window.addEventListener('resize', layout, { passive: true });
   });
