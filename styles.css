@@ -1255,6 +1255,7 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
    no JS needed for the map itself.
    ========================================================= */
 .worldmap {
+  position: relative;
   width: 100%;
   max-width: 920px;
   aspect-ratio: 2 / 1;
@@ -1262,12 +1263,12 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
 }
 .worldmap__svg { display: block; width: 100%; height: 100%; }
 
-.worldmap__dot { fill: rgba(225, 255, 60, 0.18); }
+.worldmap__dot { fill: rgba(225, 255, 60, 0.32); }
 
 .worldmap__arc {
   fill: none;
   stroke: url(#worldmap-gradient);
-  stroke-width: 1.6;
+  stroke-width: 2;
   stroke-dasharray: 1;
   stroke-dashoffset: 1;
   transition: stroke-dashoffset 1.4s var(--ease-signature);
@@ -1296,17 +1297,33 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
   100% { transform: scale(3.2); opacity: 0; }
 }
 
+/* Labels are plain HTML positioned over the SVG (by percentage, matching
+   each marker's projected x/y) rather than SVG <text> — a font-size in
+   SVG user units would shrink along with the viewBox on small screens,
+   while this stays a normal, always-legible CSS font-size regardless of
+   how small the map itself renders. */
+.worldmap__labels {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
 .worldmap__label {
+  position: absolute;
   font-family: var(--font-heading);
   font-size: 12px;
-  fill: rgba(255, 255, 255, 0.75);
+  font-weight: 600;
+  line-height: 1;
+  color: var(--color-white);
+  text-shadow: 0 0 4px rgba(0, 0, 0, 0.9), 0 0 2px rgba(0, 0, 0, 0.9);
+  white-space: nowrap;
 }
+.worldmap__label--right { transform: translate(8px, -50%); }
+.worldmap__label--left { transform: translate(calc(-100% - 8px), -50%); }
+.worldmap__label--top { transform: translate(-50%, calc(-100% - 8px)); }
+.worldmap__label--bottom { transform: translate(-50%, 8px); }
 
-/* On narrow screens the whole SVG scales down with its viewBox, so a
-   font-size in user units would shrink below legibility — hide the
-   labels there and let the dots/arcs read as a decorative flourish. */
-@media (max-width: 480px) {
-  .worldmap__label { display: none; }
+@media (max-width: 640px) {
+  .worldmap__label { font-size: 10px; }
 }
 
 /* =========================================================
