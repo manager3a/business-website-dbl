@@ -3,6 +3,45 @@
 
   var prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
+  /* ---------- Page loader ----------
+     Shown by default (in HTML/CSS) on every page load; hidden here once
+     a minimum duration has elapsed so it's always visible for "a few
+     seconds" even on an instant local load. Also re-shown just before
+     any internal same-site navigation (a link to a different page, not
+     just a same-page anchor), so the transition between pages carries
+     the same cue instead of a blank flash. */
+  var pageLoader = document.getElementById('pageLoader');
+  if (pageLoader) {
+    var LOADER_MIN_MS = prefersReducedMotion ? 0 : 1400;
+    var LOADER_NAV_DELAY_MS = prefersReducedMotion ? 0 : 350;
+
+    window.setTimeout(function () {
+      pageLoader.classList.add('page-loader--hidden');
+    }, Math.max(0, LOADER_MIN_MS - performance.now()));
+
+    document.addEventListener('click', function (e) {
+      var link = e.target.closest('a[href]');
+      if (!link) return;
+      if (link.target === '_blank' || link.hasAttribute('download')) return;
+      if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+
+      var url;
+      try {
+        url = new URL(link.href, window.location.href);
+      } catch (err) {
+        return;
+      }
+      if (url.origin !== window.location.origin) return;
+      if (url.pathname === window.location.pathname) return;
+
+      e.preventDefault();
+      pageLoader.classList.remove('page-loader--hidden');
+      window.setTimeout(function () {
+        window.location.href = link.href;
+      }, LOADER_NAV_DELAY_MS);
+    });
+  }
+
   /* ---------- Footer year ---------- */
   var yearEl = document.getElementById('year');
   if (yearEl) yearEl.textContent = new Date().getFullYear();

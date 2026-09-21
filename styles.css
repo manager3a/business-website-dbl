@@ -1219,6 +1219,42 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
 .lang-switch__sep { color: var(--color-border); }
 
 /* =========================================================
+   PAGE LOADER — shown on every page load and briefly before an
+   internal navigation, using DBL's own two-chevron icon. Each chevron
+   rises into place and fades, one after the other (green then white),
+   looping while the overlay is visible. Kept small and subtle — this
+   is a loading cue, not a hero graphic. */
+.page-loader {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-bg);
+  transition: opacity var(--duration-base) var(--ease-signature);
+}
+.page-loader--hidden { opacity: 0; pointer-events: none; }
+
+.page-loader__svg { width: 44px; height: auto; overflow: visible; }
+
+.page-loader__arrow {
+  opacity: 0;
+  animation: page-loader-rise 1.6s var(--ease-signature) infinite;
+  transform-box: fill-box;
+  transform-origin: center;
+}
+.page-loader__arrow--green { fill: var(--color-accent); animation-delay: 0s; }
+.page-loader__arrow--white { fill: var(--color-white); animation-delay: 0.8s; }
+
+@keyframes page-loader-rise {
+  0%   { transform: translateY(8px); opacity: 0; }
+  35%  { transform: translateY(0);   opacity: 1; }
+  65%  { transform: translateY(0);   opacity: 1; }
+  100% { transform: translateY(-8px); opacity: 0; }
+}
+
+/* =========================================================
    CHAT WIDGET (placeholder — no provider connected yet)
    ========================================================= */
 .chat-widget {
