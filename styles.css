@@ -819,7 +819,7 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
    expand its detail card. No new dependencies (no React/Tailwind/shadcn),
    styled entirely with DBL's own palette.
    ========================================================= */
-.orbital { margin-top: var(--space-2xl); }
+.orbital { margin-top: 0; }
 
 .orbital__stage {
   position: relative;
