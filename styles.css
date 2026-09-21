@@ -587,7 +587,7 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
 /* Centered horizontally in the same reliably-empty bottom margin — the
    full-width band below a section's content, not the vertical middle
    where headings/body copy live — so it never sits on top of text. */
-.rubik3d--corner-center  { left: 50%; right: auto; bottom: 2%; top: auto; transform: translateX(-50%); }
+.rubik3d--corner-center  { left: 50%; right: auto; bottom: 8%; top: auto; transform: translateX(-50%); }
 
 .section--has-artifact { position: relative; overflow: hidden; }
 
