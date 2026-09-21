@@ -390,7 +390,11 @@
     var MARKER_COLOR = 'rgba(255, 255, 255, 1)';
     var AUTO_ROTATE_SPEED = 0.0018;
 
-    var rotY = 0.5, rotX = 0.25;
+    // Starting orientation: Miami centered and facing the viewer, with
+    // Mexico City/Bogota/Sao Paulo fanning up-left and the Madrid/Rome/
+    // London cluster low on the left edge — matches the requested first
+    // frame — before the usual auto-rotation takes over.
+    var rotY = 2.98, rotX = 0.46;
     var time = 0;
     var drag = { active: false, startX: 0, startY: 0, startRotY: 0, startRotX: 0 };
     var rafId = null;
