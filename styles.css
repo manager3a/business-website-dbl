@@ -256,36 +256,31 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
 .btn--full { width: 100%; }
 
 /* Spinning-border pill CTA — a conic-gradient ring sweeps around the
-   button on hover, in DBL's lime instead of the generic reference's
-   white. Deliberately pill-shaped (an exception to the flat/no-radius
-   button language) since that curve is part of the effect itself. */
+   button permanently (white, with a soft glow), not just on hover.
+   Deliberately pill-shaped (an exception to the flat/no-radius button
+   language) since that curve is part of the effect itself. */
 .btn--spin {
   position: relative;
   overflow: hidden;
   padding: 1px;
   border-radius: 999px;
   background: transparent;
+  box-shadow: 0 0 14px rgba(255, 255, 255, 0.16);
+  transition: box-shadow var(--duration-base) var(--ease-signature), transform var(--duration-base) var(--ease-signature);
 }
-.btn--spin:hover { transform: translateY(-2px); box-shadow: 0 0 26px rgba(225, 255, 60, 0.18); }
+.btn--spin:hover { transform: translateY(-2px); box-shadow: 0 0 26px rgba(255, 255, 255, 0.3); }
 
 .btn__spin-ring {
   position: absolute;
   inset: -100%;
-  background: conic-gradient(from 90deg at 50% 50%, transparent 0%, transparent 75%, var(--color-accent) 100%);
+  background: conic-gradient(from 90deg at 50% 50%, transparent 0%, transparent 75%, #ffffff 100%);
   animation: btn-spin 3s linear infinite;
-  opacity: 0;
-  transition: opacity var(--duration-base) var(--ease-signature);
+  filter: drop-shadow(0 0 3px rgba(255, 255, 255, 0.65));
 }
-.btn--spin:hover .btn__spin-ring { opacity: 1; }
 
-.btn__spin-static {
-  position: absolute;
-  inset: 0;
-  border-radius: 999px;
-  background: var(--color-accent-alt);
-  transition: opacity var(--duration-base) var(--ease-signature);
-}
-.btn--spin:hover .btn__spin-static { opacity: 0; }
+/* Kept in the markup for structure, but the ring above is always on
+   now, so this underlying static layer never needs to show. */
+.btn__spin-static { display: none; }
 
 .btn__spin-content {
   position: relative;
