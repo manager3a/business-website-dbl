@@ -21,9 +21,19 @@
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath d='M50 15 L85 40 L70 40 L70 85 L30 85 L30 40 L15 40 Z' fill='%23E1FF3C'/%3E%3C/svg%3E">
 
   <link rel="stylesheet" href="../styles.css">
-  <noscript><style>.reveal { opacity: 1 !important; transform: none !important; }</style></noscript>
+  <noscript><style>.reveal { opacity: 1 !important; transform: none !important; } #pageLoader { display: none !important; }</style></noscript>
 </head>
 <body>
+
+  <!-- Page-transition loader: DBL's two-chevron icon rises in, one
+       chevron after the other, then fades — shown on every page load
+       and briefly before an internal navigation. -->
+  <div class="page-loader" id="pageLoader" aria-hidden="true">
+    <svg viewBox="0 0 448.15 452.19" class="page-loader__svg">
+      <path class="page-loader__arrow page-loader__arrow--green" d="M391.45,135.74,234,37a6.91,6.91,0,0,0-7.3,0L69.05,135.74a9.22,9.22,0,0,0-4.41,7.79V250.89a3.12,3.12,0,0,0,4.82,2.48L226.6,154.83a6.91,6.91,0,0,1,7.3,0L391,253.37a3.12,3.12,0,0,0,4.81-2.48V143.53A9.21,9.21,0,0,0,391.45,135.74Z"></path>
+      <path class="page-loader__arrow page-loader__arrow--white" d="M391.45,298.13,234,199.37a6.91,6.91,0,0,0-7.3,0L69.05,298.13a9.22,9.22,0,0,0-4.41,7.79V413.28a3.12,3.12,0,0,0,4.82,2.48L226.6,317.22a6.91,6.91,0,0,1,7.3,0L391,415.76a3.12,3.12,0,0,0,4.81-2.48V305.92A9.21,9.21,0,0,0,391.45,298.13Z"></path>
+    </svg>
+  </div>
 
   <a class="skip-link" href="#main">Saltar al contenido</a>
 
