@@ -527,7 +527,7 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
 .rubik3d--hero {
   position: absolute;
   right: 3%;
-  top: 7%;
+  top: 5%;
   width: 190px;
   height: 190px;
   perspective: 780px;
@@ -633,6 +633,11 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
 #build-with-us { padding-bottom: 0; }
 #faq { padding-top: var(--space-xl); }
 
+/* The stacked top+bottom section padding reads as an oversized empty
+   gap above these two headings — tighten just their top padding. */
+#focus-areas { padding-top: var(--space-xl); }
+#process { padding-top: var(--space-xl); }
+
 .section__title {
   font-size: var(--text-heading-lg);
   line-height: 1.05;
@@ -653,6 +658,7 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
   font-size: 1.1rem;
 }
 .section__lead--tight { margin-bottom: 0; }
+.section__lead--gap-sm { margin-bottom: var(--space-md); }
 
 /* =========================================================
    GRID / CARDS
@@ -715,8 +721,8 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
   width: 18px; height: 18px;
   border-radius: 5px;
   background: var(--color-accent);
-  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='3'%3E%3Cpath d='M5 12l5 5L19 7'/%3E%3C/svg%3E") center/70% no-repeat;
-  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='3'%3E%3Cpath d='M5 12l5 5L19 7'/%3E%3C/svg%3E") center/70% no-repeat;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 448.15 452.19'%3E%3Cpath d='M391.45,135.74,234,37a6.91,6.91,0,0,0-7.3,0L69.05,135.74a9.22,9.22,0,0,0-4.41,7.79V250.89a3.12,3.12,0,0,0,4.82,2.48L226.6,154.83a6.91,6.91,0,0,1,7.3,0L391,253.37a3.12,3.12,0,0,0,4.81-2.48V143.53A9.21,9.21,0,0,0,391.45,135.74Z'/%3E%3Cpath d='M391.45,298.13,234,199.37a6.91,6.91,0,0,0-7.3,0L69.05,298.13a9.22,9.22,0,0,0-4.41,7.79V413.28a3.12,3.12,0,0,0,4.82,2.48L226.6,317.22a6.91,6.91,0,0,1,7.3,0L391,415.76a3.12,3.12,0,0,0,4.81-2.48V305.92A9.21,9.21,0,0,0,391.45,298.13Z'/%3E%3C/svg%3E") center/62% no-repeat;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 448.15 452.19'%3E%3Cpath d='M391.45,135.74,234,37a6.91,6.91,0,0,0-7.3,0L69.05,135.74a9.22,9.22,0,0,0-4.41,7.79V250.89a3.12,3.12,0,0,0,4.82,2.48L226.6,154.83a6.91,6.91,0,0,1,7.3,0L391,253.37a3.12,3.12,0,0,0,4.81-2.48V143.53A9.21,9.21,0,0,0,391.45,135.74Z'/%3E%3Cpath d='M391.45,298.13,234,199.37a6.91,6.91,0,0,0-7.3,0L69.05,298.13a9.22,9.22,0,0,0-4.41,7.79V413.28a3.12,3.12,0,0,0,4.82,2.48L226.6,317.22a6.91,6.91,0,0,1,7.3,0L391,415.76a3.12,3.12,0,0,0,4.81-2.48V305.92A9.21,9.21,0,0,0,391.45,298.13Z'/%3E%3C/svg%3E") center/62% no-repeat;
 }
 
 .solutions-list {
@@ -881,7 +887,7 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
   font-size: 1.2rem;
 }
 .orbital__node-label {
-  font-size: 0.82rem;
+  font-size: 0.7rem;
   text-transform: uppercase;
   letter-spacing: 0.04em;
   text-align: center;
@@ -953,7 +959,7 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
   .orbital__stage { max-width: 448px; }
   .orbital__hub { width: 95px; height: 95px; }
   .orbital__node { width: 92px; height: 92px; margin: -46px 0 0 -46px; }
-  .orbital__node-label { font-size: 0.72rem; }
+  .orbital__node-label { font-size: 0.62rem; }
 }
 
 /* =========================================================
