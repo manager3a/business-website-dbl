@@ -295,9 +295,10 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
   border-radius: 999px;
   background: var(--color-accent);
   color: var(--color-on-accent);
-  text-transform: uppercase;
-  font-size: 0.82rem;
-  letter-spacing: 0.08em;
+  font-family: var(--font-heading);
+  font-weight: 500;
+  font-size: 0.95rem;
+  letter-spacing: 0.02em;
   transition: background var(--duration-base) var(--ease-signature);
 }
 
@@ -740,30 +741,73 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
   -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='3'%3E%3Cpath d='M5 12l5 5L19 7'/%3E%3C/svg%3E") center/70% no-repeat;
 }
 
-.solutions-list { display: flex; flex-direction: column; gap: var(--space-md); }
-.solution {
-  padding: var(--space-md) var(--space-lg);
+.solutions-list { display: flex; flex-direction: column; gap: var(--space-lg); }
+
+/* Each solution gets its own card, revealed individually as the user
+   scrolls to it (via the shared .reveal/IntersectionObserver system).
+   The nth-child delays stagger the cascade slightly when several
+   cards cross the reveal threshold close together. */
+.solution-card {
+  position: relative;
   background: var(--color-surface);
   border: 1px solid var(--color-border);
-  border-left: 3px solid var(--color-accent);
-  border-radius: var(--radius-sm);
-  transition: border-color var(--duration-base) var(--ease-signature), transform var(--duration-base) var(--ease-signature);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  transition: transform var(--duration-base) var(--ease-signature), border-color var(--duration-base) var(--ease-signature);
 }
-.solution:hover { transform: translateX(4px); border-color: var(--color-accent); }
-.solution__header { display: flex; align-items: center; gap: 0.6rem; margin-bottom: 0.35rem; }
-.solution__icon {
+.solution-card:hover { transform: translateY(-4px); border-color: rgba(225, 255, 60, 0.4); }
+.solution-card:nth-child(1) { transition-delay: 0s; }
+.solution-card:nth-child(2) { transition-delay: 0.08s; }
+.solution-card:nth-child(3) { transition-delay: 0.16s; }
+.solution-card:nth-child(4) { transition-delay: 0.24s; }
+
+.solution-card__visual {
+  position: relative;
   display: flex;
-  flex-shrink: 0;
-  width: 22px;
-  height: 22px;
+  flex-direction: column;
+  align-items: center;
+  padding: var(--space-lg) var(--space-lg) var(--space-md);
+  background:
+    radial-gradient(circle at 30% 15%, rgba(225, 255, 60, 0.12), transparent 60%),
+    linear-gradient(160deg, #0d0d0d, #050505);
+  border-bottom: 1px solid var(--color-border);
 }
-.solution__icon svg { width: 100%; height: 100%; }
-.solution__title {
-  font-size: 1.05rem;
+.solution-card__tag,
+.solution-card__step {
+  position: absolute;
+  top: var(--space-sm);
+  font-family: var(--font-heading);
+  font-size: 0.66rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 0.3rem 0.65rem;
+  border-radius: 999px;
+  border: 1px solid var(--color-border);
+}
+.solution-card__tag { left: var(--space-sm); background: var(--color-accent); border-color: var(--color-accent); color: var(--color-on-accent); }
+.solution-card__step { right: var(--space-sm); color: var(--color-text-muted); }
+
+.solution-card__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 68px;
+  height: 68px;
+  margin-top: var(--space-md);
+  border-radius: 50%;
+  background: rgba(225, 255, 60, 0.08);
+  border: 1px solid rgba(225, 255, 60, 0.25);
+}
+.solution-card__icon svg { width: 32px; height: 32px; }
+
+.solution-card__body { padding: var(--space-md) var(--space-lg) var(--space-lg); }
+.solution-card__title {
+  font-size: 1.1rem;
   color: var(--color-accent);
-  margin-bottom: 0;
+  margin-bottom: 0.5rem;
 }
-.solution__text { color: var(--color-text-muted); font-size: 0.92rem; }
+.solution-card__text { color: var(--color-text-muted); font-size: 0.92rem; }
 
 .solutions-intro { margin-top: 0; }
 
