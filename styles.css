@@ -569,7 +569,7 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
    top, so the reliably empty margin is at the bottom, below the last
    piece of content and before the section's own bottom padding ends. */
 .rubik3d--corner-left-1  { left: 1.5%; right: auto; bottom: 3%; top: auto; }
-.rubik3d--corner-right-1 { right: 7%; left: auto; bottom: 3%; top: auto; }
+.rubik3d--corner-right-1 { right: 7%; left: auto; top: 20%; bottom: auto; }
 .rubik3d--corner-left-2  { left: 5%; right: auto; bottom: 4%; top: auto; }
 .rubik3d--corner-right-2 { right: 7%; left: auto; bottom: 4%; top: auto; }
 
@@ -636,7 +636,7 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
 /* The stacked top+bottom section padding reads as an oversized empty
    gap above these two headings — tighten just their top padding. */
 #focus-areas { padding-top: var(--space-xl); }
-#process { padding-top: var(--space-xl); }
+#process { padding-top: var(--space-xl); padding-bottom: var(--space-lg); }
 
 /* The globe fills most of #about's own visual weight, so the usual
    bottom section padding on top of it reads as an oversized empty
