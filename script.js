@@ -6,13 +6,25 @@
   /* ---------- Page loader ----------
      Shown by default (in HTML/CSS) on every page load; hidden here once
      a minimum duration has elapsed so it's always visible for "a few
-     seconds" even on an instant local load. Also re-shown just before
-     any internal same-site navigation (a link to a different page, not
-     just a same-page anchor), so the transition between pages carries
-     the same cue instead of a blank flash. */
+     seconds" even on an instant local load. The very first page load of
+     a browser session gets a longer 4s minimum (tracked via
+     sessionStorage); every load after that — internal navigations, a
+     refresh, a new tab on the same site — keeps the shorter 2s. Also
+     re-shown just before any internal same-site navigation (a link to a
+     different page, not just a same-page anchor), so the transition
+     between pages carries the same cue instead of a blank flash. */
   var pageLoader = document.getElementById('pageLoader');
   if (pageLoader) {
-    var LOADER_MIN_MS = prefersReducedMotion ? 0 : 1400;
+    var LOADER_SESSION_KEY = 'dbl_loader_seen';
+    var isFirstLoad = true;
+    try {
+      isFirstLoad = !sessionStorage.getItem(LOADER_SESSION_KEY);
+      sessionStorage.setItem(LOADER_SESSION_KEY, '1');
+    } catch (err) {
+      /* sessionStorage unavailable (private mode, etc.) — treat as first load */
+    }
+
+    var LOADER_MIN_MS = prefersReducedMotion ? 0 : (isFirstLoad ? 4000 : 2000);
     var LOADER_NAV_DELAY_MS = prefersReducedMotion ? 0 : 350;
 
     window.setTimeout(function () {
