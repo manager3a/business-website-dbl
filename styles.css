@@ -1245,86 +1245,24 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
 .lang-switch__sep { color: var(--color-border); }
 
 /* =========================================================
-   WORLD MAP (Our Lab section) — flat dotted world map in DBL's
-   palette, with a chain of curved connections from Miami through
-   Latin America and on to a few European hubs and Tokyo. Built as
-   plain SVG: the connection arcs use pathLength="1" so their
-   stroke-dasharray/offset can be expressed in the 0–1 range and
-   "drawn in" with a CSS transition (staggered per arc below) once
-   the section scrolls into view, via the shared .reveal system —
-   no JS needed for the map itself.
+   INTERACTIVE GLOBE (Our Lab section) — canvas-drawn, DBL-palette
+   globe with arcs tracing Miami -> Latin America -> Europe -> Tokyo.
+   Draggable to rotate; see the initGlobe() block in script.js.
    ========================================================= */
-.worldmap {
-  position: relative;
+.globe {
   width: 100%;
-  max-width: 920px;
-  aspect-ratio: 2 / 1;
+  max-width: 560px;
+  aspect-ratio: 1 / 1;
   margin: var(--space-md) auto 0;
 }
-.worldmap__svg { display: block; width: 100%; height: 100%; }
-
-.worldmap__dot { fill: rgba(225, 255, 60, 0.32); }
-
-.worldmap__arc {
-  fill: none;
-  stroke: url(#worldmap-gradient);
-  stroke-width: 2;
-  stroke-dasharray: 1;
-  stroke-dashoffset: 1;
-  transition: stroke-dashoffset 1.4s var(--ease-signature);
+.globe__canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  cursor: grab;
+  touch-action: none;
 }
-.worldmap__arc:nth-child(1) { transition-delay: 0s; }
-.worldmap__arc:nth-child(2) { transition-delay: 0.15s; }
-.worldmap__arc:nth-child(3) { transition-delay: 0.3s; }
-.worldmap__arc:nth-child(4) { transition-delay: 0.45s; }
-.worldmap__arc:nth-child(5) { transition-delay: 0.6s; }
-.worldmap__arc:nth-child(6) { transition-delay: 0.75s; }
-.worldmap__arc:nth-child(7) { transition-delay: 0.9s; }
-.worldmap__arc:nth-child(8) { transition-delay: 1.05s; }
-.worldmap.is-visible .worldmap__arc { stroke-dashoffset: 0; }
-
-.worldmap__point { fill: var(--color-white); }
-.worldmap__pulse {
-  fill: none;
-  stroke: var(--color-accent);
-  stroke-width: 1;
-  transform-box: fill-box;
-  transform-origin: center;
-  animation: worldmap-pulse 1.8s var(--ease-signature) infinite;
-}
-@keyframes worldmap-pulse {
-  0% { transform: scale(1); opacity: 0.6; }
-  100% { transform: scale(3.2); opacity: 0; }
-}
-
-/* Labels are plain HTML positioned over the SVG (by percentage, matching
-   each marker's projected x/y) rather than SVG <text> — a font-size in
-   SVG user units would shrink along with the viewBox on small screens,
-   while this stays a normal, always-legible CSS font-size regardless of
-   how small the map itself renders. */
-.worldmap__labels {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-}
-.worldmap__label {
-  position: absolute;
-  font-family: var(--font-heading);
-  font-size: 12px;
-  font-weight: 600;
-  line-height: 1;
-  color: var(--color-white);
-  text-shadow: 0 0 4px rgba(0, 0, 0, 0.9), 0 0 2px rgba(0, 0, 0, 0.9);
-  white-space: nowrap;
-}
-.worldmap__label--right { transform: translate(8px, -50%); }
-.worldmap__label--left { transform: translate(calc(-100% - 8px), -50%); }
-.worldmap__label--top { transform: translate(-50%, calc(-100% - 8px)); }
-.worldmap__label--bottom { transform: translate(-50%, 8px); }
-
-@media (max-width: 640px) {
-  .worldmap__label { font-size: 10px; }
-}
+.globe__canvas:active { cursor: grabbing; }
 
 /* =========================================================
    PAGE LOADER — shown on every page load and briefly before an
