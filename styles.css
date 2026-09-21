@@ -652,6 +652,7 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
   margin-bottom: var(--space-2xl);
   font-size: 1.1rem;
 }
+.section__lead--tight { margin-bottom: 0; }
 
 /* =========================================================
    GRID / CARDS
@@ -691,20 +692,14 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
 .card__text { color: var(--color-text-muted); font-size: 0.98rem; }
 
 /* =========================================================
-   SPLIT (How we work)
+   OUR MODEL / OUR SOLUTIONS (Solutions section intro)
    ========================================================= */
-.split {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: var(--space-2xl);
-  align-items: start;
+.checklist--center {
+  max-width: 640px;
+  margin: 0 auto var(--space-2xl);
 }
 
-.split__text {
-  color: var(--color-text-muted);
-  margin-block: var(--space-md) var(--space-lg);
-  font-size: 1.02rem;
-}
+.solutions-heading { margin-top: var(--space-lg); }
 
 .checklist { display: flex; flex-direction: column; gap: 0.85rem; }
 .checklist li {
@@ -796,8 +791,6 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
   margin-bottom: 0.5rem;
 }
 .solution-card__text { color: var(--color-text-muted); font-size: 0.92rem; }
-
-.solutions-intro { margin-top: 0; }
 
 /* =========================================================
    ORBITAL — 5-phase radial timeline (Process section)
@@ -1251,24 +1244,69 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
 .lang-switch__sep { color: var(--color-border); }
 
 /* =========================================================
-   INTERACTIVE GLOBE (Our Lab section) — canvas-drawn, DBL-palette
-   globe with arcs tracing Miami -> Latin America -> the rest of the
-   world. Draggable to rotate; see the initGlobes() block in script.js.
+   WORLD MAP (Our Lab section) — flat dotted world map in DBL's
+   palette, with a chain of curved connections from Miami through
+   Latin America and on to a few European hubs and Tokyo. Built as
+   plain SVG: the connection arcs use pathLength="1" so their
+   stroke-dasharray/offset can be expressed in the 0–1 range and
+   "drawn in" with a CSS transition (staggered per arc below) once
+   the section scrolls into view, via the shared .reveal system —
+   no JS needed for the map itself.
    ========================================================= */
-.globe {
+.worldmap {
   width: 100%;
-  max-width: 560px;
-  aspect-ratio: 1 / 1;
-  margin: var(--space-xl) auto 0;
+  max-width: 720px;
+  aspect-ratio: 2 / 1;
+  margin: var(--space-md) auto 0;
 }
-.globe__canvas {
-  display: block;
-  width: 100%;
-  height: 100%;
-  cursor: grab;
-  touch-action: none;
+.worldmap__svg { display: block; width: 100%; height: 100%; }
+
+.worldmap__dot { fill: rgba(225, 255, 60, 0.18); }
+
+.worldmap__arc {
+  fill: none;
+  stroke: url(#worldmap-gradient);
+  stroke-width: 1.6;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  transition: stroke-dashoffset 1.4s var(--ease-signature);
 }
-.globe__canvas:active { cursor: grabbing; }
+.worldmap__arc:nth-child(1) { transition-delay: 0s; }
+.worldmap__arc:nth-child(2) { transition-delay: 0.15s; }
+.worldmap__arc:nth-child(3) { transition-delay: 0.3s; }
+.worldmap__arc:nth-child(4) { transition-delay: 0.45s; }
+.worldmap__arc:nth-child(5) { transition-delay: 0.6s; }
+.worldmap__arc:nth-child(6) { transition-delay: 0.75s; }
+.worldmap__arc:nth-child(7) { transition-delay: 0.9s; }
+.worldmap__arc:nth-child(8) { transition-delay: 1.05s; }
+.worldmap.is-visible .worldmap__arc { stroke-dashoffset: 0; }
+
+.worldmap__point { fill: var(--color-white); }
+.worldmap__pulse {
+  fill: none;
+  stroke: var(--color-accent);
+  stroke-width: 1;
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: worldmap-pulse 1.8s var(--ease-signature) infinite;
+}
+@keyframes worldmap-pulse {
+  0% { transform: scale(1); opacity: 0.6; }
+  100% { transform: scale(3.2); opacity: 0; }
+}
+
+.worldmap__label {
+  font-family: var(--font-heading);
+  font-size: 12px;
+  fill: rgba(255, 255, 255, 0.75);
+}
+
+/* On narrow screens the whole SVG scales down with its viewBox, so a
+   font-size in user units would shrink below legibility — hide the
+   labels there and let the dots/arcs read as a decorative flourish. */
+@media (max-width: 480px) {
+  .worldmap__label { display: none; }
+}
 
 /* =========================================================
    PAGE LOADER — shown on every page load and briefly before an
@@ -1455,7 +1493,6 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
   .navbar__cta { width: 100%; }
 
   .grid--3 { grid-template-columns: 1fr; }
-  .split { grid-template-columns: 1fr; gap: var(--space-lg); }
   .contact-info { grid-template-columns: 1fr; gap: var(--space-md); }
   .form-row { grid-template-columns: 1fr; }
   .footer__inner { grid-template-columns: 1fr 1fr; }
