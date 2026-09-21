@@ -9,7 +9,7 @@
      seconds" even on an instant local load. The very first page load of
      a browser session gets a longer 4s minimum (tracked via
      sessionStorage); every load after that — internal navigations, a
-     refresh, a new tab on the same site — keeps the shorter 1.4s. Also
+     refresh, a new tab on the same site — keeps the shorter 2s. Also
      re-shown just before any internal same-site navigation (a link to a
      different page, not just a same-page anchor), so the transition
      between pages carries the same cue instead of a blank flash. */
@@ -24,7 +24,7 @@
       /* sessionStorage unavailable (private mode, etc.) — treat as first load */
     }
 
-    var LOADER_MIN_MS = prefersReducedMotion ? 0 : (isFirstLoad ? 4000 : 1400);
+    var LOADER_MIN_MS = prefersReducedMotion ? 0 : (isFirstLoad ? 4000 : 2000);
     var LOADER_NAV_DELAY_MS = prefersReducedMotion ? 0 : 350;
 
     window.setTimeout(function () {
