@@ -630,7 +630,7 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
 /* Build With Us sits directly above FAQ with no visual break between them
    (same dark tone family), so the usual double section padding reads as an
    empty gap — tighten just this boundary. */
-#build-with-us { padding-bottom: 0; }
+#build-with-us { padding-top: var(--space-xl); padding-bottom: 0; }
 #faq { padding-top: var(--space-xl); }
 
 /* The stacked top+bottom section padding reads as an oversized empty
