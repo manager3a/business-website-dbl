@@ -316,4 +316,220 @@
 
     window.addEventListener('resize', layout, { passive: true });
   });
+
+  /* ---------- Interactive globe (Our Lab section) ----------
+     Canvas-drawn globe in DBL's palette (lime dots/arcs, white
+     markers): a Fibonacci-sphere point cloud plus a chain of great-
+     circle arcs from Miami through Latin America and on to a few
+     other global hubs. Draggable via Pointer Events; auto-rotates
+     when idle. prefers-reduced-motion stops the auto-rotate and the
+     traveling pulse along each arc, but dragging still works. */
+  var GLOBE_MARKERS = [
+    { lat: 25.76, lng: -80.19, label: 'Miami' },
+    { lat: 19.43, lng: -99.13, label: 'Mexico City' },
+    { lat: 4.71, lng: -74.07, label: 'Bogotá' },
+    { lat: -23.55, lng: -46.63, label: 'São Paulo' },
+    { lat: 51.51, lng: -0.13, label: 'London' },
+    { lat: 25.2, lng: 55.27, label: 'Dubai' },
+    { lat: 1.35, lng: 103.82, label: 'Singapore' },
+    { lat: 35.68, lng: 139.69, label: 'Tokyo' }
+  ];
+  var GLOBE_CONNECTIONS = [
+    { from: [25.76, -80.19], to: [19.43, -99.13] },
+    { from: [19.43, -99.13], to: [4.71, -74.07] },
+    { from: [4.71, -74.07], to: [-23.55, -46.63] },
+    { from: [-23.55, -46.63], to: [51.51, -0.13] },
+    { from: [51.51, -0.13], to: [25.2, 55.27] },
+    { from: [25.2, 55.27], to: [1.35, 103.82] },
+    { from: [1.35, 103.82], to: [35.68, 139.69] },
+    { from: [25.76, -80.19], to: [51.51, -0.13] }
+  ];
+
+  function latLngToXYZ(lat, lng, radius) {
+    var phi = ((90 - lat) * Math.PI) / 180;
+    var theta = ((lng + 180) * Math.PI) / 180;
+    return [
+      -(radius * Math.sin(phi) * Math.cos(theta)),
+      radius * Math.cos(phi),
+      radius * Math.sin(phi) * Math.sin(theta)
+    ];
+  }
+
+  function rotateY(x, y, z, angle) {
+    var cos = Math.cos(angle), sin = Math.sin(angle);
+    return [x * cos + z * sin, y, -x * sin + z * cos];
+  }
+
+  function rotateX(x, y, z, angle) {
+    var cos = Math.cos(angle), sin = Math.sin(angle);
+    return [x, y * cos - z * sin, y * sin + z * cos];
+  }
+
+  function projectPoint(x, y, z, cx, cy, fov) {
+    var scale = fov / (fov + z);
+    return [x * scale + cx, y * scale + cy];
+  }
+
+  function initGlobe(canvas) {
+    var ctx = canvas.getContext('2d');
+    if (!ctx) return;
+
+    var DOT_COLOR = 'rgba(225, 255, 60, ALPHA)';
+    var ARC_COLOR = 'rgba(225, 255, 60, 0.45)';
+    var MARKER_COLOR = 'rgba(255, 255, 255, 1)';
+    var AUTO_ROTATE_SPEED = 0.0018;
+
+    var rotY = 0.5, rotX = 0.25;
+    var time = 0;
+    var drag = { active: false, startX: 0, startY: 0, startRotY: 0, startRotX: 0 };
+    var rafId = null;
+
+    var dots = [];
+    var numDots = 900;
+    var goldenRatio = (1 + Math.sqrt(5)) / 2;
+    for (var i = 0; i < numDots; i++) {
+      var theta = (2 * Math.PI * i) / goldenRatio;
+      var phi = Math.acos(1 - (2 * (i + 0.5)) / numDots);
+      dots.push([
+        Math.cos(theta) * Math.sin(phi),
+        Math.cos(phi),
+        Math.sin(theta) * Math.sin(phi)
+      ]);
+    }
+
+    function draw() {
+      var dpr = window.devicePixelRatio || 1;
+      var w = canvas.clientWidth;
+      var h = canvas.clientHeight;
+      if (!w || !h) {
+        rafId = window.requestAnimationFrame(draw);
+        return;
+      }
+      canvas.width = w * dpr;
+      canvas.height = h * dpr;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+      var cx = w / 2, cy = h / 2;
+      var radius = Math.min(w, h) * 0.4;
+      var fov = 600;
+
+      if (!drag.active && !prefersReducedMotion) rotY += AUTO_ROTATE_SPEED;
+      if (!prefersReducedMotion) time += 0.015;
+
+      ctx.clearRect(0, 0, w, h);
+
+      ctx.beginPath();
+      ctx.arc(cx, cy, radius, 0, Math.PI * 2);
+      ctx.strokeStyle = 'rgba(225, 255, 60, 0.1)';
+      ctx.lineWidth = 1;
+      ctx.stroke();
+
+      var d, x, y, z, sxy, depthAlpha, dotSize;
+      for (var j = 0; j < dots.length; j++) {
+        d = dots[j];
+        x = d[0] * radius; y = d[1] * radius; z = d[2] * radius;
+        var rXd = rotateX(x, y, z, rotX);
+        var rYd = rotateY(rXd[0], rXd[1], rXd[2], rotY);
+        x = rYd[0]; y = rYd[1]; z = rYd[2];
+        if (z > 0) continue;
+
+        sxy = projectPoint(x, y, z, cx, cy, fov);
+        depthAlpha = Math.max(0.08, 1 - (z + radius) / (2 * radius));
+        dotSize = 0.8 + depthAlpha * 0.7;
+
+        ctx.beginPath();
+        ctx.arc(sxy[0], sxy[1], dotSize, 0, Math.PI * 2);
+        ctx.fillStyle = DOT_COLOR.replace('ALPHA', depthAlpha.toFixed(2));
+        ctx.fill();
+      }
+
+      GLOBE_CONNECTIONS.forEach(function (conn) {
+        var p1 = latLngToXYZ(conn.from[0], conn.from[1], radius);
+        var p2 = latLngToXYZ(conn.to[0], conn.to[1], radius);
+        var r1 = rotateY.apply(null, rotateX(p1[0], p1[1], p1[2], rotX).concat(rotY));
+        var r2 = rotateY.apply(null, rotateX(p2[0], p2[1], p2[2], rotX).concat(rotY));
+
+        if (r1[2] > radius * 0.3 && r2[2] > radius * 0.3) return;
+
+        var s1 = projectPoint(r1[0], r1[1], r1[2], cx, cy, fov);
+        var s2 = projectPoint(r2[0], r2[1], r2[2], cx, cy, fov);
+
+        var midX = (r1[0] + r2[0]) / 2, midY = (r1[1] + r2[1]) / 2, midZ = (r1[2] + r2[2]) / 2;
+        var midLen = Math.sqrt(midX * midX + midY * midY + midZ * midZ) || 1;
+        var arcHeight = radius * 1.25;
+        var elev = [
+          (midX / midLen) * arcHeight,
+          (midY / midLen) * arcHeight,
+          (midZ / midLen) * arcHeight
+        ];
+        var sc = projectPoint(elev[0], elev[1], elev[2], cx, cy, fov);
+
+        ctx.beginPath();
+        ctx.moveTo(s1[0], s1[1]);
+        ctx.quadraticCurveTo(sc[0], sc[1], s2[0], s2[1]);
+        ctx.strokeStyle = ARC_COLOR;
+        ctx.lineWidth = 1.2;
+        ctx.stroke();
+
+        var t = (Math.sin(time * 1.2 + conn.from[0] * 0.1) + 1) / 2;
+        var tx = (1 - t) * (1 - t) * s1[0] + 2 * (1 - t) * t * sc[0] + t * t * s2[0];
+        var ty = (1 - t) * (1 - t) * s1[1] + 2 * (1 - t) * t * sc[1] + t * t * s2[1];
+
+        ctx.beginPath();
+        ctx.arc(tx, ty, 2, 0, Math.PI * 2);
+        ctx.fillStyle = MARKER_COLOR;
+        ctx.fill();
+      });
+
+      GLOBE_MARKERS.forEach(function (marker) {
+        var p = latLngToXYZ(marker.lat, marker.lng, radius);
+        var rP = rotateY.apply(null, rotateX(p[0], p[1], p[2], rotX).concat(rotY));
+        if (rP[2] > radius * 0.1) return;
+
+        var s = projectPoint(rP[0], rP[1], rP[2], cx, cy, fov);
+        var pulse = Math.sin(time * 2 + marker.lat) * 0.5 + 0.5;
+
+        ctx.beginPath();
+        ctx.arc(s[0], s[1], 4 + pulse * 4, 0, Math.PI * 2);
+        ctx.strokeStyle = MARKER_COLOR.replace('1)', (0.2 + pulse * 0.15).toFixed(2) + ')');
+        ctx.lineWidth = 1;
+        ctx.stroke();
+
+        ctx.beginPath();
+        ctx.arc(s[0], s[1], 2.5, 0, Math.PI * 2);
+        ctx.fillStyle = MARKER_COLOR;
+        ctx.fill();
+
+        if (marker.label) {
+          ctx.font = '11px ' + getComputedStyle(document.body).fontFamily;
+          ctx.fillStyle = 'rgba(255, 255, 255, 0.75)';
+          ctx.fillText(marker.label, s[0] + 8, s[1] + 3);
+        }
+      });
+
+      rafId = window.requestAnimationFrame(draw);
+    }
+
+    canvas.addEventListener('pointerdown', function (e) {
+      drag.active = true;
+      drag.startX = e.clientX;
+      drag.startY = e.clientY;
+      drag.startRotY = rotY;
+      drag.startRotX = rotX;
+      canvas.setPointerCapture(e.pointerId);
+    });
+    canvas.addEventListener('pointermove', function (e) {
+      if (!drag.active) return;
+      var dx = e.clientX - drag.startX;
+      var dy = e.clientY - drag.startY;
+      rotY = drag.startRotY + dx * 0.005;
+      rotX = Math.max(-1, Math.min(1, drag.startRotX + dy * 0.005));
+    });
+    canvas.addEventListener('pointerup', function () { drag.active = false; });
+    canvas.addEventListener('pointercancel', function () { drag.active = false; });
+
+    rafId = window.requestAnimationFrame(draw);
+  }
+
+  document.querySelectorAll('[data-globe]').forEach(initGlobe);
 })();
