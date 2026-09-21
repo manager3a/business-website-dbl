@@ -315,12 +315,13 @@
     }
 
     nodes.forEach(function (node, i) {
-      node.addEventListener('click', function () {
-        if (activeIndex === i) {
-          closeCard();
-        } else {
-          openCard(node, i);
-        }
+      node.addEventListener('mouseenter', function () { openCard(node, i); });
+      node.addEventListener('mouseleave', function () {
+        if (activeIndex === i) closeCard();
+      });
+      node.addEventListener('focus', function () { openCard(node, i); });
+      node.addEventListener('blur', function () {
+        if (activeIndex === i) closeCard();
       });
     });
 
