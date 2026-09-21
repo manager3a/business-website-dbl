@@ -1226,6 +1226,7 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
   text-align: center;
 }
 .footer__bottom p { color: var(--color-text-faint); font-size: 0.85rem; }
+.footer__credit { margin-top: 0.35rem; }
 
 /* =========================================================
    LANGUAGE SWITCH
@@ -1255,7 +1256,7 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
    ========================================================= */
 .worldmap {
   width: 100%;
-  max-width: 720px;
+  max-width: 920px;
   aspect-ratio: 2 / 1;
   margin: var(--space-md) auto 0;
 }
