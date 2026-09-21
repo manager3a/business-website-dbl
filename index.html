@@ -20,10 +20,20 @@
 
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath d='M50 15 L85 40 L70 40 L70 85 L30 85 L30 40 L15 40 Z' fill='%23E1FF3C'/%3E%3C/svg%3E">
 
-  <link rel="stylesheet" href="styles.css">
-  <noscript><style>.reveal { opacity: 1 !important; transform: none !important; }</style></noscript>
+  <link rel="stylesheet" href="styles.css?v=4">
+  <noscript><style>.reveal { opacity: 1 !important; transform: none !important; } #pageLoader { display: none !important; }</style></noscript>
 </head>
 <body>
+
+  <!-- Page-transition loader: DBL's two-chevron icon rises in, one
+       chevron after the other, then fades — shown on every page load
+       and briefly before an internal navigation. -->
+  <div class="page-loader" id="pageLoader" aria-hidden="true">
+    <svg viewBox="0 0 448.15 452.19" class="page-loader__svg">
+      <path class="page-loader__arrow page-loader__arrow--green" d="M391.45,135.74,234,37a6.91,6.91,0,0,0-7.3,0L69.05,135.74a9.22,9.22,0,0,0-4.41,7.79V250.89a3.12,3.12,0,0,0,4.82,2.48L226.6,154.83a6.91,6.91,0,0,1,7.3,0L391,253.37a3.12,3.12,0,0,0,4.81-2.48V143.53A9.21,9.21,0,0,0,391.45,135.74Z"></path>
+      <path class="page-loader__arrow page-loader__arrow--white" d="M391.45,298.13,234,199.37a6.91,6.91,0,0,0-7.3,0L69.05,298.13a9.22,9.22,0,0,0-4.41,7.79V413.28a3.12,3.12,0,0,0,4.82,2.48L226.6,317.22a6.91,6.91,0,0,1,7.3,0L391,415.76a3.12,3.12,0,0,0,4.81-2.48V305.92A9.21,9.21,0,0,0,391.45,298.13Z"></path>
+    </svg>
+  </div>
 
   <a class="skip-link" href="#main">Skip to content</a>
 
@@ -42,7 +52,17 @@
           <li><a href="#focus-areas">Focus Areas</a></li>
           <li><a href="#about">Our Lab</a></li>
         </ul>
-        <a href="#build-with-us" class="btn btn--primary navbar__cta">Share Your Idea</a>
+        <a href="#build-with-us" class="btn btn--spin navbar__cta">
+          <span class="btn__spin-ring" aria-hidden="true"></span>
+          <span class="btn__spin-static" aria-hidden="true"></span>
+          <span class="btn__spin-content">
+            Share Your Idea
+            <svg class="btn__spin-arrow" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M5 12h14" />
+              <path d="m12 5 7 7-7 7" />
+            </svg>
+          </span>
+        </a>
       </nav>
 
       <div class="lang-switch" aria-label="Language">
@@ -65,22 +85,152 @@
         <svg viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice" class="hero__bg-svg">
           <defs>
             <pattern id="grid" width="60" height="60" patternUnits="userSpaceOnUse">
-              <path d="M 60 0 L 0 0 0 60" fill="none" stroke="rgba(225,255,60,0.06)" stroke-width="1"/>
+              <path d="M 60 0 L 0 0 0 60" fill="none" stroke="rgba(225,255,60,0.05)" stroke-width="1"/>
             </pattern>
           </defs>
           <rect width="1440" height="900" fill="url(#grid)"/>
-          <g stroke="var(--color-accent)" stroke-width="1.5" fill="none" opacity="0.35">
-            <path d="M100 750 L100 500 L300 500 L300 350 L520 350"/>
-            <circle cx="520" cy="350" r="5" fill="var(--color-accent)"/>
-            <path d="M1340 200 L1140 200 L1140 400 L980 400 L980 620"/>
-            <circle cx="980" cy="620" r="5" fill="var(--color-accent)"/>
-            <path d="M700 80 L700 220 L860 220"/>
-            <circle cx="860" cy="220" r="4" fill="var(--color-accent)"/>
-          </g>
-          <g stroke="var(--color-accent)" stroke-width="2" fill="none" opacity="0.5">
-            <polyline points="180,650 260,600 340,630 420,560 500,590" />
-          </g>
         </svg>
+      </div>
+
+      <!-- Signature brand artifact: a real 3D Rubik's cube built from
+           26 cubies (transform-style: preserve-3d). Rows spin around the
+           vertical axis and, nested inside each row, columns spin around
+           the horizontal axis — both directions at once, like solving a
+           real cube — while the whole cube also tumbles, in DBL's own
+           palette instead of the classic 6 colors. -->
+      <div class="rubik3d rubik3d--hero" aria-hidden="true">
+        <div class="rubik3d__cube">
+          <div class="rubik3d__row rubik3d__row--top">
+            <div class="rubik3d__col rubik3d__col--left">
+              <div class="rubik3d__cubie" style="--cx:-1;--cy:1;--cz:-1">
+                <div class="rubik3d__face rubik3d__face--back"></div>
+                <div class="rubik3d__face rubik3d__face--left"></div>
+                <div class="rubik3d__face rubik3d__face--top"></div>
+              </div>
+              <div class="rubik3d__cubie" style="--cx:-1;--cy:1;--cz:0">
+                <div class="rubik3d__face rubik3d__face--left"></div>
+                <div class="rubik3d__face rubik3d__face--top"></div>
+              </div>
+              <div class="rubik3d__cubie" style="--cx:-1;--cy:1;--cz:1">
+                <div class="rubik3d__face rubik3d__face--front"></div>
+                <div class="rubik3d__face rubik3d__face--left"></div>
+                <div class="rubik3d__face rubik3d__face--top"></div>
+              </div>
+            </div>
+            <div class="rubik3d__col rubik3d__col--mid">
+              <div class="rubik3d__cubie" style="--cx:0;--cy:1;--cz:-1">
+                <div class="rubik3d__face rubik3d__face--back"></div>
+                <div class="rubik3d__face rubik3d__face--top"></div>
+              </div>
+              <div class="rubik3d__cubie" style="--cx:0;--cy:1;--cz:0">
+                <div class="rubik3d__face rubik3d__face--top"></div>
+              </div>
+              <div class="rubik3d__cubie" style="--cx:0;--cy:1;--cz:1">
+                <div class="rubik3d__face rubik3d__face--front"></div>
+                <div class="rubik3d__face rubik3d__face--top"></div>
+              </div>
+            </div>
+            <div class="rubik3d__col rubik3d__col--right">
+              <div class="rubik3d__cubie" style="--cx:1;--cy:1;--cz:-1">
+                <div class="rubik3d__face rubik3d__face--back"></div>
+                <div class="rubik3d__face rubik3d__face--right"></div>
+                <div class="rubik3d__face rubik3d__face--top"></div>
+              </div>
+              <div class="rubik3d__cubie" style="--cx:1;--cy:1;--cz:0">
+                <div class="rubik3d__face rubik3d__face--right"></div>
+                <div class="rubik3d__face rubik3d__face--top"></div>
+              </div>
+              <div class="rubik3d__cubie" style="--cx:1;--cy:1;--cz:1">
+                <div class="rubik3d__face rubik3d__face--front"></div>
+                <div class="rubik3d__face rubik3d__face--right"></div>
+                <div class="rubik3d__face rubik3d__face--top"></div>
+              </div>
+            </div>
+          </div>
+          <div class="rubik3d__row rubik3d__row--mid">
+            <div class="rubik3d__col rubik3d__col--left">
+              <div class="rubik3d__cubie" style="--cx:-1;--cy:0;--cz:-1">
+                <div class="rubik3d__face rubik3d__face--back"></div>
+                <div class="rubik3d__face rubik3d__face--left"></div>
+              </div>
+              <div class="rubik3d__cubie" style="--cx:-1;--cy:0;--cz:0">
+                <div class="rubik3d__face rubik3d__face--left"></div>
+              </div>
+              <div class="rubik3d__cubie" style="--cx:-1;--cy:0;--cz:1">
+                <div class="rubik3d__face rubik3d__face--front"></div>
+                <div class="rubik3d__face rubik3d__face--left"></div>
+              </div>
+            </div>
+            <div class="rubik3d__col rubik3d__col--mid">
+              <div class="rubik3d__cubie" style="--cx:0;--cy:0;--cz:-1">
+                <div class="rubik3d__face rubik3d__face--back"></div>
+              </div>
+              <div class="rubik3d__cubie" style="--cx:0;--cy:0;--cz:1">
+                <div class="rubik3d__face rubik3d__face--front"></div>
+              </div>
+            </div>
+            <div class="rubik3d__col rubik3d__col--right">
+              <div class="rubik3d__cubie" style="--cx:1;--cy:0;--cz:-1">
+                <div class="rubik3d__face rubik3d__face--back"></div>
+                <div class="rubik3d__face rubik3d__face--right"></div>
+              </div>
+              <div class="rubik3d__cubie" style="--cx:1;--cy:0;--cz:0">
+                <div class="rubik3d__face rubik3d__face--right"></div>
+              </div>
+              <div class="rubik3d__cubie" style="--cx:1;--cy:0;--cz:1">
+                <div class="rubik3d__face rubik3d__face--front"></div>
+                <div class="rubik3d__face rubik3d__face--right"></div>
+              </div>
+            </div>
+          </div>
+          <div class="rubik3d__row rubik3d__row--bottom">
+            <div class="rubik3d__col rubik3d__col--left">
+              <div class="rubik3d__cubie" style="--cx:-1;--cy:-1;--cz:-1">
+                <div class="rubik3d__face rubik3d__face--back"></div>
+                <div class="rubik3d__face rubik3d__face--left"></div>
+                <div class="rubik3d__face rubik3d__face--bottom"></div>
+              </div>
+              <div class="rubik3d__cubie" style="--cx:-1;--cy:-1;--cz:0">
+                <div class="rubik3d__face rubik3d__face--left"></div>
+                <div class="rubik3d__face rubik3d__face--bottom"></div>
+              </div>
+              <div class="rubik3d__cubie" style="--cx:-1;--cy:-1;--cz:1">
+                <div class="rubik3d__face rubik3d__face--front"></div>
+                <div class="rubik3d__face rubik3d__face--left"></div>
+                <div class="rubik3d__face rubik3d__face--bottom"></div>
+              </div>
+            </div>
+            <div class="rubik3d__col rubik3d__col--mid">
+              <div class="rubik3d__cubie" style="--cx:0;--cy:-1;--cz:-1">
+                <div class="rubik3d__face rubik3d__face--back"></div>
+                <div class="rubik3d__face rubik3d__face--bottom"></div>
+              </div>
+              <div class="rubik3d__cubie" style="--cx:0;--cy:-1;--cz:0">
+                <div class="rubik3d__face rubik3d__face--bottom"></div>
+              </div>
+              <div class="rubik3d__cubie" style="--cx:0;--cy:-1;--cz:1">
+                <div class="rubik3d__face rubik3d__face--front"></div>
+                <div class="rubik3d__face rubik3d__face--bottom"></div>
+              </div>
+            </div>
+            <div class="rubik3d__col rubik3d__col--right">
+              <div class="rubik3d__cubie" style="--cx:1;--cy:-1;--cz:-1">
+                <div class="rubik3d__face rubik3d__face--back"></div>
+                <div class="rubik3d__face rubik3d__face--right"></div>
+                <div class="rubik3d__face rubik3d__face--bottom"></div>
+              </div>
+              <div class="rubik3d__cubie" style="--cx:1;--cy:-1;--cz:0">
+                <div class="rubik3d__face rubik3d__face--right"></div>
+                <div class="rubik3d__face rubik3d__face--bottom"></div>
+              </div>
+              <div class="rubik3d__cubie" style="--cx:1;--cy:-1;--cz:1">
+                <div class="rubik3d__face rubik3d__face--front"></div>
+                <div class="rubik3d__face rubik3d__face--right"></div>
+                <div class="rubik3d__face rubik3d__face--bottom"></div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
 
       <div class="container hero__content reveal">
@@ -91,7 +241,17 @@
           resources to grow.
         </p>
         <div class="hero__actions">
-          <a href="#build-with-us" class="btn btn--primary">Share Your Idea</a>
+          <a href="#build-with-us" class="btn btn--spin">
+            <span class="btn__spin-ring" aria-hidden="true"></span>
+            <span class="btn__spin-static" aria-hidden="true"></span>
+            <span class="btn__spin-content">
+              Share Your Idea
+              <svg class="btn__spin-arrow" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M5 12h14" />
+                <path d="m12 5 7 7-7 7" />
+              </svg>
+            </span>
+          </a>
           <a href="#focus-areas" class="btn btn--outline">Explore Focus Areas</a>
         </div>
       </div>
@@ -153,79 +313,218 @@
     <!-- ============ SOLUTIONS ============ -->
     <section class="section section--alt" id="solutions">
       <div class="container">
-        <div class="split">
-          <div class="split__col reveal">
-            <p class="eyebrow">Our Model</p>
-            <h2 class="section__title section__title--left">We build <span class="text-accent">businesses</span>, not just websites.</h2>
-            <p class="split__text">
-              We close the gap between having an idea and turning it into a viable business, reducing
-              uncertainty and risk before you invest significant resources.
-            </p>
-            <p class="split__text">
-              Our differentiator: we operate as a Venture Studio — we validate, build and scale businesses
-              with global reach, and for the projects with the highest potential, we can join as strategic
-              partners.
-            </p>
-            <ul class="checklist">
-              <li>Ideal for entrepreneurs with an idea but no validated business model yet</li>
-              <li>Early-stage startups that need strategy, development and market access</li>
-              <li>Professionals with sector expertise who want to turn it into a company</li>
-              <li>Companies creating new business units or digital products</li>
-              <li>Founders open to a strategic alliance or equity partnership with DBL</li>
-            </ul>
-          </div>
+        <p class="eyebrow eyebrow--center">Our Model</p>
+        <h2 class="section__title reveal">We build <span class="text-accent">businesses</span>, not just websites.</h2>
+        <p class="section__lead reveal">
+          We close the gap between having an idea and turning it into a viable business, reducing
+          uncertainty and risk before you invest significant resources.
+        </p>
 
-          <div class="split__col reveal">
-            <p class="eyebrow">Our Solutions</p>
-            <p class="split__text solutions-intro">
-              Four ways to work with DBL, matched to where your idea or business stands today — from a first
-              diagnosis to scaling a business that already works.
-            </p>
-            <div class="solutions-list">
-              <div class="solution">
-                <div class="solution__header">
-                  <span class="solution__icon" aria-hidden="true">
-                    <svg viewBox="0 0 24 24" fill="none"><circle cx="10" cy="10" r="6" stroke="var(--color-accent)" stroke-width="1.8"/><path d="M14.5 14.5L20 20" stroke="var(--color-accent)" stroke-width="1.8" stroke-linecap="round"/></svg>
-                  </span>
-                  <h3 class="solution__title">Venture Discovery</h3>
-                </div>
-                <p class="solution__text">Discover and prove the real potential of an idea — idea diagnosis, market validation and business design.</p>
-              </div>
-              <div class="solution">
-                <div class="solution__header">
-                  <span class="solution__icon" aria-hidden="true">
-                    <svg viewBox="0 0 24 24" fill="none"><circle cx="8.5" cy="12" r="5" stroke="var(--color-accent)" stroke-width="1.8"/><circle cx="15.5" cy="12" r="5" stroke="var(--color-accent)" stroke-width="1.8"/></svg>
-                  </span>
-                  <h3 class="solution__title">Venture Partnership</h3>
-                </div>
-                <p class="solution__text">A strategic alliance to develop the highest-potential projects together, sharing contributions, risk and rewards.</p>
-              </div>
-              <div class="solution">
-                <div class="solution__header">
-                  <span class="solution__icon" aria-hidden="true">
-                    <svg viewBox="0 0 24 24" fill="none"><rect x="3.5" y="13" width="7" height="7" stroke="var(--color-accent)" stroke-width="1.8"/><rect x="13" y="7" width="7" height="13" stroke="var(--color-accent)" stroke-width="1.8"/></svg>
-                  </span>
-                  <h3 class="solution__title">Venture Building</h3>
-                </div>
-                <p class="solution__text">Turn a validated idea into a real, market-ready business — brand, product and go-to-market execution.</p>
-              </div>
-              <div class="solution">
-                <div class="solution__header">
-                  <span class="solution__icon" aria-hidden="true">
-                    <svg viewBox="0 0 24 24" fill="none"><path d="M4 18L9.5 12.5L13 16L20 6.5" stroke="var(--color-accent)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M14 6.5H20V12.5" stroke="var(--color-accent)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                  </span>
-                  <h3 class="solution__title">Venture Growth</h3>
-                </div>
-                <p class="solution__text">Drive traction, optimization and global expansion for a business that already works.</p>
-              </div>
+        <ul class="checklist checklist--center reveal">
+          <li>Ideal for entrepreneurs with an idea but no validated business model yet</li>
+          <li>Early-stage startups that need strategy, development and market access</li>
+          <li>Professionals with sector expertise who want to turn it into a company</li>
+          <li>Companies creating new business units or digital products</li>
+          <li>Founders open to a strategic alliance or equity partnership with DBL</li>
+        </ul>
+
+        <div class="solutions-heading reveal">
+          <p class="eyebrow eyebrow--center">Our Solutions</p>
+          <p class="section__lead">
+            Four ways to work with DBL, matched to where your idea or business stands today — from a first
+            diagnosis to scaling a business that already works.
+          </p>
+        </div>
+
+        <div class="solutions-list">
+          <article class="solution-card reveal">
+            <div class="solution-card__visual" aria-hidden="true">
+              <span class="solution-card__tag">DBL</span>
+              <span class="solution-card__icon">
+                <svg viewBox="0 0 24 24" fill="none"><circle cx="10" cy="10" r="6" stroke="var(--color-accent)" stroke-width="1.8"/><path d="M14.5 14.5L20 20" stroke="var(--color-accent)" stroke-width="1.8" stroke-linecap="round"/></svg>
+              </span>
             </div>
-          </div>
+            <div class="solution-card__body">
+              <h3 class="solution-card__title">Venture Discovery</h3>
+              <p class="solution-card__text">Discover and prove the real potential of an idea — idea diagnosis, market validation and business design.</p>
+            </div>
+          </article>
+          <article class="solution-card reveal">
+            <div class="solution-card__visual" aria-hidden="true">
+              <span class="solution-card__tag">DBL</span>
+              <span class="solution-card__icon">
+                <svg viewBox="0 0 24 24" fill="none"><circle cx="8.5" cy="12" r="5" stroke="var(--color-accent)" stroke-width="1.8"/><circle cx="15.5" cy="12" r="5" stroke="var(--color-accent)" stroke-width="1.8"/></svg>
+              </span>
+            </div>
+            <div class="solution-card__body">
+              <h3 class="solution-card__title">Venture Partnership</h3>
+              <p class="solution-card__text">A strategic alliance to develop the highest-potential projects together, sharing contributions, risk and rewards.</p>
+            </div>
+          </article>
+          <article class="solution-card reveal">
+            <div class="solution-card__visual" aria-hidden="true">
+              <span class="solution-card__tag">DBL</span>
+              <span class="solution-card__icon">
+                <svg viewBox="0 0 24 24" fill="none"><rect x="3.5" y="13" width="7" height="7" stroke="var(--color-accent)" stroke-width="1.8"/><rect x="13" y="7" width="7" height="13" stroke="var(--color-accent)" stroke-width="1.8"/></svg>
+              </span>
+            </div>
+            <div class="solution-card__body">
+              <h3 class="solution-card__title">Venture Building</h3>
+              <p class="solution-card__text">Turn a validated idea into a real, market-ready business — brand, product and go-to-market execution.</p>
+            </div>
+          </article>
+          <article class="solution-card reveal">
+            <div class="solution-card__visual" aria-hidden="true">
+              <span class="solution-card__tag">DBL</span>
+              <span class="solution-card__icon">
+                <svg viewBox="0 0 24 24" fill="none"><path d="M4 18L9.5 12.5L13 16L20 6.5" stroke="var(--color-accent)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M14 6.5H20V12.5" stroke="var(--color-accent)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </span>
+            </div>
+            <div class="solution-card__body">
+              <h3 class="solution-card__title">Venture Growth</h3>
+              <p class="solution-card__text">Drive traction, optimization and global expansion for a business that already works.</p>
+            </div>
+          </article>
         </div>
       </div>
     </section>
 
     <!-- ============ OUR PROCESS — 5 PHASES ============ -->
-    <section class="section" id="process">
+    <section class="section section--has-artifact" id="process">
+      <div class="rubik3d rubik3d--mini rubik3d--corner-right-1" aria-hidden="true">
+        <div class="rubik3d__cube">
+          <div class="rubik3d__row rubik3d__row--top">
+            <div class="rubik3d__col rubik3d__col--left">
+              <div class="rubik3d__cubie" style="--cx:-1;--cy:1;--cz:-1">
+                <div class="rubik3d__face rubik3d__face--back"></div>
+                <div class="rubik3d__face rubik3d__face--left"></div>
+                <div class="rubik3d__face rubik3d__face--top"></div>
+              </div>
+              <div class="rubik3d__cubie" style="--cx:-1;--cy:1;--cz:0">
+                <div class="rubik3d__face rubik3d__face--left"></div>
+                <div class="rubik3d__face rubik3d__face--top"></div>
+              </div>
+              <div class="rubik3d__cubie" style="--cx:-1;--cy:1;--cz:1">
+                <div class="rubik3d__face rubik3d__face--front"></div>
+                <div class="rubik3d__face rubik3d__face--left"></div>
+                <div class="rubik3d__face rubik3d__face--top"></div>
+              </div>
+            </div>
+            <div class="rubik3d__col rubik3d__col--mid">
+              <div class="rubik3d__cubie" style="--cx:0;--cy:1;--cz:-1">
+                <div class="rubik3d__face rubik3d__face--back"></div>
+                <div class="rubik3d__face rubik3d__face--top"></div>
+              </div>
+              <div class="rubik3d__cubie" style="--cx:0;--cy:1;--cz:0">
+                <div class="rubik3d__face rubik3d__face--top"></div>
+              </div>
+              <div class="rubik3d__cubie" style="--cx:0;--cy:1;--cz:1">
+                <div class="rubik3d__face rubik3d__face--front"></div>
+                <div class="rubik3d__face rubik3d__face--top"></div>
+              </div>
+            </div>
+            <div class="rubik3d__col rubik3d__col--right">
+              <div class="rubik3d__cubie" style="--cx:1;--cy:1;--cz:-1">
+                <div class="rubik3d__face rubik3d__face--back"></div>
+                <div class="rubik3d__face rubik3d__face--right"></div>
+                <div class="rubik3d__face rubik3d__face--top"></div>
+              </div>
+              <div class="rubik3d__cubie" style="--cx:1;--cy:1;--cz:0">
+                <div class="rubik3d__face rubik3d__face--right"></div>
+                <div class="rubik3d__face rubik3d__face--top"></div>
+              </div>
+              <div class="rubik3d__cubie" style="--cx:1;--cy:1;--cz:1">
+                <div class="rubik3d__face rubik3d__face--front"></div>
+                <div class="rubik3d__face rubik3d__face--right"></div>
+                <div class="rubik3d__face rubik3d__face--top"></div>
+              </div>
+            </div>
+          </div>
+          <div class="rubik3d__row rubik3d__row--mid">
+            <div class="rubik3d__col rubik3d__col--left">
+              <div class="rubik3d__cubie" style="--cx:-1;--cy:0;--cz:-1">
+                <div class="rubik3d__face rubik3d__face--back"></div>
+                <div class="rubik3d__face rubik3d__face--left"></div>
+              </div>
+              <div class="rubik3d__cubie" style="--cx:-1;--cy:0;--cz:0">
+                <div class="rubik3d__face rubik3d__face--left"></div>
+              </div>
+              <div class="rubik3d__cubie" style="--cx:-1;--cy:0;--cz:1">
+                <div class="rubik3d__face rubik3d__face--front"></div>
+                <div class="rubik3d__face rubik3d__face--left"></div>
+              </div>
+            </div>
+            <div class="rubik3d__col rubik3d__col--mid">
+              <div class="rubik3d__cubie" style="--cx:0;--cy:0;--cz:-1">
+                <div class="rubik3d__face rubik3d__face--back"></div>
+              </div>
+              <div class="rubik3d__cubie" style="--cx:0;--cy:0;--cz:1">
+                <div class="rubik3d__face rubik3d__face--front"></div>
+              </div>
+            </div>
+            <div class="rubik3d__col rubik3d__col--right">
+              <div class="rubik3d__cubie" style="--cx:1;--cy:0;--cz:-1">
+                <div class="rubik3d__face rubik3d__face--back"></div>
+                <div class="rubik3d__face rubik3d__face--right"></div>
+              </div>
+              <div class="rubik3d__cubie" style="--cx:1;--cy:0;--cz:0">
+                <div class="rubik3d__face rubik3d__face--right"></div>
+              </div>
+              <div class="rubik3d__cubie" style="--cx:1;--cy:0;--cz:1">
+                <div class="rubik3d__face rubik3d__face--front"></div>
+                <div class="rubik3d__face rubik3d__face--right"></div>
+              </div>
+            </div>
+          </div>
+          <div class="rubik3d__row rubik3d__row--bottom">
+            <div class="rubik3d__col rubik3d__col--left">
+              <div class="rubik3d__cubie" style="--cx:-1;--cy:-1;--cz:-1">
+                <div class="rubik3d__face rubik3d__face--back"></div>
+                <div class="rubik3d__face rubik3d__face--left"></div>
+                <div class="rubik3d__face rubik3d__face--bottom"></div>
+              </div>
+              <div class="rubik3d__cubie" style="--cx:-1;--cy:-1;--cz:0">
+                <div class="rubik3d__face rubik3d__face--left"></div>
+                <div class="rubik3d__face rubik3d__face--bottom"></div>
+              </div>
+              <div class="rubik3d__cubie" style="--cx:-1;--cy:-1;--cz:1">
+                <div class="rubik3d__face rubik3d__face--front"></div>
+                <div class="rubik3d__face rubik3d__face--left"></div>
+                <div class="rubik3d__face rubik3d__face--bottom"></div>
+              </div>
+            </div>
+            <div class="rubik3d__col rubik3d__col--mid">
+              <div class="rubik3d__cubie" style="--cx:0;--cy:-1;--cz:-1">
+                <div class="rubik3d__face rubik3d__face--back"></div>
+                <div class="rubik3d__face rubik3d__face--bottom"></div>
+              </div>
+              <div class="rubik3d__cubie" style="--cx:0;--cy:-1;--cz:0">
+                <div class="rubik3d__face rubik3d__face--bottom"></div>
+              </div>
+              <div class="rubik3d__cubie" style="--cx:0;--cy:-1;--cz:1">
+                <div class="rubik3d__face rubik3d__face--front"></div>
+                <div class="rubik3d__face rubik3d__face--bottom"></div>
+              </div>
+            </div>
+            <div class="rubik3d__col rubik3d__col--right">
+              <div class="rubik3d__cubie" style="--cx:1;--cy:-1;--cz:-1">
+                <div class="rubik3d__face rubik3d__face--back"></div>
+                <div class="rubik3d__face rubik3d__face--right"></div>
+                <div class="rubik3d__face rubik3d__face--bottom"></div>
+              </div>
+              <div class="rubik3d__cubie" style="--cx:1;--cy:-1;--cz:0">
+                <div class="rubik3d__face rubik3d__face--right"></div>
+                <div class="rubik3d__face rubik3d__face--bottom"></div>
+              </div>
+              <div class="rubik3d__cubie" style="--cx:1;--cy:-1;--cz:1">
+                <div class="rubik3d__face rubik3d__face--front"></div>
+                <div class="rubik3d__face rubik3d__face--right"></div>
+                <div class="rubik3d__face rubik3d__face--bottom"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
       <div class="container">
         <p class="eyebrow eyebrow--center">How We Work</p>
         <h2 class="section__title reveal">A clear, <span class="text-olive">five-phase</span> path from idea to global business.</h2>
@@ -234,57 +533,65 @@
           what it takes to move forward, and what you'll have in hand at the end of it.
         </p>
 
-        <ol class="process">
-          <li class="process__item reveal">
-            <div class="process__marker"><span>01</span></div>
-            <div class="process__body">
-              <h3 class="process__title">Idea Diagnosis</h3>
-              <p class="process__question">&ldquo;Does this idea have real potential to become a business?&rdquo;</p>
-              <p class="process__text">We evaluate the proposal, the problem, the customer, the differentiation and the global reach.</p>
-              <p class="process__result"><strong>Result:</strong> Initial diagnosis and recommendation.</p>
+        <div class="orbital reveal" data-orbital>
+          <div class="orbital__stage">
+            <div class="orbital__hub" aria-hidden="true">
+              <span class="orbital__hub-ring"></span>
+              <span class="orbital__hub-ring orbital__hub-ring--2"></span>
+              <span class="orbital__hub-dot"></span>
             </div>
-          </li>
-          <li class="process__item reveal">
-            <div class="process__marker"><span>02</span></div>
-            <div class="process__body">
-              <h3 class="process__title">Market Validation</h3>
-              <p class="process__question">&ldquo;Is there a real commercial opportunity here?&rdquo;</p>
-              <p class="process__text">Research, competition analysis, demand testing, interviews and willingness-to-pay signals.</p>
-              <p class="process__result"><strong>Result:</strong> Evidence of the commercial opportunity.</p>
+            <div class="orbital__track">
+              <button type="button" class="orbital__node"
+                data-title="Idea Diagnosis"
+                data-question="&ldquo;Does this idea have real potential to become a business?&rdquo;"
+                data-text="We evaluate the proposal, the problem, the customer, the differentiation and the global reach."
+                data-result="<strong>Result:</strong> Initial diagnosis and recommendation.">
+                <span class="orbital__node-num">01</span>
+                <span class="orbital__node-label">Idea Diagnosis</span>
+              </button>
+              <button type="button" class="orbital__node"
+                data-title="Market Validation"
+                data-question="&ldquo;Is there a real commercial opportunity here?&rdquo;"
+                data-text="Research, competition analysis, demand testing, interviews and willingness-to-pay signals."
+                data-result="<strong>Result:</strong> Evidence of the commercial opportunity.">
+                <span class="orbital__node-num">02</span>
+                <span class="orbital__node-label">Market Validation</span>
+              </button>
+              <button type="button" class="orbital__node"
+                data-title="Business Design"
+                data-question="&ldquo;What does a viable business around this idea look like — and do we build it together?&rdquo;"
+                data-text="Revenue model, value proposition, cost structure, channels and strategy. If it makes sense for both sides, this is also where we define a potential Venture Partnership: roles, responsibilities, equity participation, IP and profit distribution."
+                data-result="<strong>Result:</strong> A viable business model — and, where applicable, a partnership agreement to move into development.">
+                <span class="orbital__node-num">03</span>
+                <span class="orbital__node-label">Business Design</span>
+              </button>
+              <button type="button" class="orbital__node"
+                data-title="Development &amp; Launch"
+                data-question="&ldquo;How do we turn the validated idea into a real business?&rdquo;"
+                data-text="Brand, prototype or MVP, digital presence, automation, marketing and sales."
+                data-result="<strong>Result:</strong> A business ready to be tested in the market.">
+                <span class="orbital__node-num">04</span>
+                <span class="orbital__node-label">Development &amp; Launch</span>
+              </button>
+              <button type="button" class="orbital__node"
+                data-title="Global Scaling"
+                data-question="&ldquo;How do we grow and expand a business that already works?&rdquo;"
+                data-text="Optimization, geographic expansion, new channels, alliances and investment readiness."
+                data-result="<strong>Result:</strong> A business prepared to grow.">
+                <span class="orbital__node-num">05</span>
+                <span class="orbital__node-label">Global Scaling</span>
+              </button>
             </div>
-          </li>
-          <li class="process__item reveal">
-            <div class="process__marker"><span>03</span></div>
-            <div class="process__body">
-              <h3 class="process__title">Business Design</h3>
-              <p class="process__question">&ldquo;What does a viable business around this idea look like — and do we build it together?&rdquo;</p>
-              <p class="process__text">
-                Revenue model, value proposition, cost structure, channels and strategy. If it makes sense for both
-                sides, this is also where we define a potential <strong>Venture Partnership</strong>: roles,
-                responsibilities, equity participation, IP and profit distribution.
-              </p>
-              <p class="process__result"><strong>Result:</strong> A viable business model — and, where applicable, a partnership agreement to move into development.</p>
+            <div class="orbital__line" data-orbital-line hidden aria-hidden="true"></div>
+            <div class="orbital__card" data-orbital-card hidden>
+              <button type="button" class="orbital__card-close" data-orbital-close aria-label="Close">&times;</button>
+              <h3 class="orbital__card-title"></h3>
+              <p class="orbital__card-question"></p>
+              <p class="orbital__card-text"></p>
+              <p class="orbital__card-result"></p>
             </div>
-          </li>
-          <li class="process__item reveal">
-            <div class="process__marker"><span>04</span></div>
-            <div class="process__body">
-              <h3 class="process__title">Development &amp; Launch</h3>
-              <p class="process__question">&ldquo;How do we turn the validated idea into a real business?&rdquo;</p>
-              <p class="process__text">Brand, prototype or MVP, digital presence, automation, marketing and sales.</p>
-              <p class="process__result"><strong>Result:</strong> A business ready to be tested in the market.</p>
-            </div>
-          </li>
-          <li class="process__item reveal">
-            <div class="process__marker"><span>05</span></div>
-            <div class="process__body">
-              <h3 class="process__title">Global Scaling</h3>
-              <p class="process__question">&ldquo;How do we grow and expand a business that already works?&rdquo;</p>
-              <p class="process__text">Optimization, geographic expansion, new channels, alliances and investment readiness.</p>
-              <p class="process__result"><strong>Result:</strong> A business prepared to grow.</p>
-            </div>
-          </li>
-        </ol>
+          </div>
+        </div>
       </div>
     </section>
 
@@ -293,10 +600,13 @@
       <div class="container">
         <p class="eyebrow eyebrow--center">Our Lab</p>
         <h2 class="section__title reveal">We empower <span class="text-olive">ideas</span> to drive those who think <span class="text-olive">big</span>.</h2>
-        <p class="section__lead reveal">
-          We work from Miami, FL with founders around the world who are ready to strengthen their ideas and turn
-          them into scalable businesses prepared to attract investment.
+        <p class="section__lead section__lead--tight reveal">
+          We work from <span class="text-accent">Miami, FL</span> with founders around the world who are ready to
+          strengthen their ideas and turn them into scalable businesses prepared to attract investment.
         </p>
+        <div class="globe reveal">
+          <canvas class="globe__canvas" data-globe aria-label="Interactive globe showing DBL's reach, starting in Miami and connecting to Mexico City, Bogota, Sao Paulo, Madrid, Rome, London and Tokyo"></canvas>
+        </div>
       </div>
     </section>
 
@@ -363,7 +673,141 @@
     </section>
 
     <!-- ============ FAQ ============ -->
-    <section class="section" id="faq">
+    <section class="section section--has-artifact" id="faq">
+      <div class="rubik3d rubik3d--mini rubik3d--corner-right-2" aria-hidden="true">
+        <div class="rubik3d__cube">
+          <div class="rubik3d__row rubik3d__row--top">
+            <div class="rubik3d__col rubik3d__col--left">
+              <div class="rubik3d__cubie" style="--cx:-1;--cy:1;--cz:-1">
+                <div class="rubik3d__face rubik3d__face--back"></div>
+                <div class="rubik3d__face rubik3d__face--left"></div>
+                <div class="rubik3d__face rubik3d__face--top"></div>
+              </div>
+              <div class="rubik3d__cubie" style="--cx:-1;--cy:1;--cz:0">
+                <div class="rubik3d__face rubik3d__face--left"></div>
+                <div class="rubik3d__face rubik3d__face--top"></div>
+              </div>
+              <div class="rubik3d__cubie" style="--cx:-1;--cy:1;--cz:1">
+                <div class="rubik3d__face rubik3d__face--front"></div>
+                <div class="rubik3d__face rubik3d__face--left"></div>
+                <div class="rubik3d__face rubik3d__face--top"></div>
+              </div>
+            </div>
+            <div class="rubik3d__col rubik3d__col--mid">
+              <div class="rubik3d__cubie" style="--cx:0;--cy:1;--cz:-1">
+                <div class="rubik3d__face rubik3d__face--back"></div>
+                <div class="rubik3d__face rubik3d__face--top"></div>
+              </div>
+              <div class="rubik3d__cubie" style="--cx:0;--cy:1;--cz:0">
+                <div class="rubik3d__face rubik3d__face--top"></div>
+              </div>
+              <div class="rubik3d__cubie" style="--cx:0;--cy:1;--cz:1">
+                <div class="rubik3d__face rubik3d__face--front"></div>
+                <div class="rubik3d__face rubik3d__face--top"></div>
+              </div>
+            </div>
+            <div class="rubik3d__col rubik3d__col--right">
+              <div class="rubik3d__cubie" style="--cx:1;--cy:1;--cz:-1">
+                <div class="rubik3d__face rubik3d__face--back"></div>
+                <div class="rubik3d__face rubik3d__face--right"></div>
+                <div class="rubik3d__face rubik3d__face--top"></div>
+              </div>
+              <div class="rubik3d__cubie" style="--cx:1;--cy:1;--cz:0">
+                <div class="rubik3d__face rubik3d__face--right"></div>
+                <div class="rubik3d__face rubik3d__face--top"></div>
+              </div>
+              <div class="rubik3d__cubie" style="--cx:1;--cy:1;--cz:1">
+                <div class="rubik3d__face rubik3d__face--front"></div>
+                <div class="rubik3d__face rubik3d__face--right"></div>
+                <div class="rubik3d__face rubik3d__face--top"></div>
+              </div>
+            </div>
+          </div>
+          <div class="rubik3d__row rubik3d__row--mid">
+            <div class="rubik3d__col rubik3d__col--left">
+              <div class="rubik3d__cubie" style="--cx:-1;--cy:0;--cz:-1">
+                <div class="rubik3d__face rubik3d__face--back"></div>
+                <div class="rubik3d__face rubik3d__face--left"></div>
+              </div>
+              <div class="rubik3d__cubie" style="--cx:-1;--cy:0;--cz:0">
+                <div class="rubik3d__face rubik3d__face--left"></div>
+              </div>
+              <div class="rubik3d__cubie" style="--cx:-1;--cy:0;--cz:1">
+                <div class="rubik3d__face rubik3d__face--front"></div>
+                <div class="rubik3d__face rubik3d__face--left"></div>
+              </div>
+            </div>
+            <div class="rubik3d__col rubik3d__col--mid">
+              <div class="rubik3d__cubie" style="--cx:0;--cy:0;--cz:-1">
+                <div class="rubik3d__face rubik3d__face--back"></div>
+              </div>
+              <div class="rubik3d__cubie" style="--cx:0;--cy:0;--cz:1">
+                <div class="rubik3d__face rubik3d__face--front"></div>
+              </div>
+            </div>
+            <div class="rubik3d__col rubik3d__col--right">
+              <div class="rubik3d__cubie" style="--cx:1;--cy:0;--cz:-1">
+                <div class="rubik3d__face rubik3d__face--back"></div>
+                <div class="rubik3d__face rubik3d__face--right"></div>
+              </div>
+              <div class="rubik3d__cubie" style="--cx:1;--cy:0;--cz:0">
+                <div class="rubik3d__face rubik3d__face--right"></div>
+              </div>
+              <div class="rubik3d__cubie" style="--cx:1;--cy:0;--cz:1">
+                <div class="rubik3d__face rubik3d__face--front"></div>
+                <div class="rubik3d__face rubik3d__face--right"></div>
+              </div>
+            </div>
+          </div>
+          <div class="rubik3d__row rubik3d__row--bottom">
+            <div class="rubik3d__col rubik3d__col--left">
+              <div class="rubik3d__cubie" style="--cx:-1;--cy:-1;--cz:-1">
+                <div class="rubik3d__face rubik3d__face--back"></div>
+                <div class="rubik3d__face rubik3d__face--left"></div>
+                <div class="rubik3d__face rubik3d__face--bottom"></div>
+              </div>
+              <div class="rubik3d__cubie" style="--cx:-1;--cy:-1;--cz:0">
+                <div class="rubik3d__face rubik3d__face--left"></div>
+                <div class="rubik3d__face rubik3d__face--bottom"></div>
+              </div>
+              <div class="rubik3d__cubie" style="--cx:-1;--cy:-1;--cz:1">
+                <div class="rubik3d__face rubik3d__face--front"></div>
+                <div class="rubik3d__face rubik3d__face--left"></div>
+                <div class="rubik3d__face rubik3d__face--bottom"></div>
+              </div>
+            </div>
+            <div class="rubik3d__col rubik3d__col--mid">
+              <div class="rubik3d__cubie" style="--cx:0;--cy:-1;--cz:-1">
+                <div class="rubik3d__face rubik3d__face--back"></div>
+                <div class="rubik3d__face rubik3d__face--bottom"></div>
+              </div>
+              <div class="rubik3d__cubie" style="--cx:0;--cy:-1;--cz:0">
+                <div class="rubik3d__face rubik3d__face--bottom"></div>
+              </div>
+              <div class="rubik3d__cubie" style="--cx:0;--cy:-1;--cz:1">
+                <div class="rubik3d__face rubik3d__face--front"></div>
+                <div class="rubik3d__face rubik3d__face--bottom"></div>
+              </div>
+            </div>
+            <div class="rubik3d__col rubik3d__col--right">
+              <div class="rubik3d__cubie" style="--cx:1;--cy:-1;--cz:-1">
+                <div class="rubik3d__face rubik3d__face--back"></div>
+                <div class="rubik3d__face rubik3d__face--right"></div>
+                <div class="rubik3d__face rubik3d__face--bottom"></div>
+              </div>
+              <div class="rubik3d__cubie" style="--cx:1;--cy:-1;--cz:0">
+                <div class="rubik3d__face rubik3d__face--right"></div>
+                <div class="rubik3d__face rubik3d__face--bottom"></div>
+              </div>
+              <div class="rubik3d__cubie" style="--cx:1;--cy:-1;--cz:1">
+                <div class="rubik3d__face rubik3d__face--front"></div>
+                <div class="rubik3d__face rubik3d__face--right"></div>
+                <div class="rubik3d__face rubik3d__face--bottom"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
       <div class="container">
         <p class="eyebrow eyebrow--center">FAQ</p>
         <h2 class="section__title reveal">Frequently asked questions.</h2>
@@ -448,7 +892,7 @@
       <div class="footer__col">
         <h4>Contact</h4>
         <ul class="footer__contact">
-          <li><strong>Address:</strong> 990 Biscayne Blvd, Ste 501-16<br>Miami, FL, United States</li>
+          <li><strong>Address:</strong> 990 Biscayne Blvd, Ste 501-16<br>Miami, FL, United States, 33132</li>
           <li><strong>Phone:</strong> <a href="https://wa.me/17869400991" target="_blank" rel="noopener">+1 786-940-0991</a></li>
         </ul>
       </div>
@@ -463,6 +907,7 @@
 
     <div class="container footer__bottom">
       <p>&copy; <span id="year"></span> Digital Business Lab. All rights reserved.</p>
+      <p class="footer__credit">Designed &amp; Developed by: Cognit</p>
     </div>
   </footer>
 
@@ -488,7 +933,7 @@
     <button type="button" class="btn btn--primary" id="cookieAccept">Got it</button>
   </div>
 
-  <script src="script.js"></script>
+  <script src="script.js?v=4"></script>
 
   <!--
   +------------------------------------------+
