@@ -638,6 +638,11 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
 #focus-areas { padding-top: var(--space-xl); }
 #process { padding-top: var(--space-xl); }
 
+/* The globe fills most of #about's own visual weight, so the usual
+   bottom section padding on top of it reads as an oversized empty
+   gap before "Build With Us" — tighten it. */
+#about { padding-bottom: var(--space-lg); }
+
 .section__title {
   font-size: var(--text-heading-lg);
   line-height: 1.05;
