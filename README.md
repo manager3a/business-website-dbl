@@ -2,7 +2,7 @@
 
 Sitio web corporativo de **Digital Business Lab**, Venture Studio con sede en Miami, FL, enfocado en ayudar a emprendedores y empresas en etapa temprana a validar, construir y escalar ideas de negocio con alcance global.
 
-Sitio estático (HTML/CSS/JS vanilla), arquitectura JAMstack, sin build step, listo para desplegar en Vercel u otro hosting estático directamente desde este repositorio.
+Sitio estático (HTML/CSS/JS vanilla) y arquitectura JAMstack, sin build step, listo para desplegar en Vercel u otro hosting estático directamente desde este repositorio.
 
 ## Estado del proyecto
 
