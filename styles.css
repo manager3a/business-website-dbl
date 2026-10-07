@@ -1165,6 +1165,8 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
 
 .form-note { color: var(--color-text-faint); font-size: 0.85rem; text-align: center; }
 
+.form-note--error { color: #e05252; }
+
 .contact-info {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
