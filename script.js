@@ -123,9 +123,17 @@
     revealEls.forEach(function (el) { observer.observe(el); });
   }
 
-  /* ---------- Build With Us form (backend pending — see setup comment in HTML) ---------- */
+  /* ---------- Build With Us form ----------
+     Submits to /api/contact (a Vercel serverless function, see that
+     file for setup). On success the submitter gets an automatic
+     thank-you email in their own language (EN/ES, from <html lang>),
+     and the DBL team gets an internal notification with Reply-To set
+     to the submitter. */
   var buildForm = document.getElementById('buildForm');
   if (buildForm) {
+    var buildFormNote = buildForm.querySelector('.form-note');
+    var buildFormNoteDefaultText = buildFormNote ? buildFormNote.textContent : '';
+
     buildForm.addEventListener('submit', function (e) {
       e.preventDefault();
 
@@ -139,18 +147,62 @@
 
       var submitBtn = buildForm.querySelector('button[type="submit"]');
       var originalText = submitBtn ? submitBtn.textContent : '';
+      var sendingText = buildForm.getAttribute('data-sending-text') || originalText;
       var successText = buildForm.getAttribute('data-success-text') || originalText;
+      var errorText = buildForm.getAttribute('data-error-text') ||
+        'Something went wrong — please try again or email us directly.';
+
       if (submitBtn) {
-        submitBtn.textContent = successText;
+        submitBtn.textContent = sendingText;
         submitBtn.disabled = true;
       }
-      setTimeout(function () {
-        buildForm.reset();
-        if (submitBtn) {
-          submitBtn.textContent = originalText;
-          submitBtn.disabled = false;
-        }
-      }, 3200);
+      if (buildFormNote) {
+        buildFormNote.textContent = buildFormNoteDefaultText;
+        buildFormNote.classList.remove('form-note--error');
+      }
+
+      var formData = new FormData(buildForm);
+      var payload = {
+        name: formData.get('name'),
+        email: formData.get('email'),
+        phone: formData.get('phone'),
+        company: formData.get('company'),
+        idea: formData.get('idea'),
+        website: formData.get('website'),
+        lang: document.documentElement.lang === 'es' ? 'es' : 'en'
+      };
+
+      fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      })
+        .then(function (response) {
+          return response.json().catch(function () { return {}; }).then(function (data) {
+            return { ok: response.ok && data.ok, status: response.status };
+          });
+        })
+        .then(function (result) {
+          if (!result.ok) throw new Error('submit_failed');
+          if (submitBtn) submitBtn.textContent = successText;
+          buildForm.reset();
+          setTimeout(function () {
+            if (submitBtn) {
+              submitBtn.textContent = originalText;
+              submitBtn.disabled = false;
+            }
+          }, 4000);
+        })
+        .catch(function () {
+          if (submitBtn) {
+            submitBtn.textContent = originalText;
+            submitBtn.disabled = false;
+          }
+          if (buildFormNote) {
+            buildFormNote.textContent = errorText;
+            buildFormNote.classList.add('form-note--error');
+          }
+        });
     });
   }
 

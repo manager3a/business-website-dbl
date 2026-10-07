@@ -20,7 +20,7 @@
 
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath d='M50 15 L85 40 L70 40 L70 85 L30 85 L30 40 L15 40 Z' fill='%23E1FF3C'/%3E%3C/svg%3E">
 
-  <link rel="stylesheet" href="../styles.css?v=13">
+  <link rel="stylesheet" href="../styles.css?v=14">
   <noscript><style>.reveal { opacity: 1 !important; transform: none !important; } #pageLoader { display: none !important; }</style></noscript>
 </head>
 <body>
@@ -623,17 +623,12 @@
             </p>
           </div>
 
-          <!--
-            SETUP (Formspree/EmailJS pending — see plan): to go live, either
-            1) Formspree: set action="https://formspree.io/f/YOUR_FORM_ID" and remove
-               the JS preventDefault-based simulation in script.js's buildForm handler, or
-            2) EmailJS: keep action="#", call emailjs.sendForm(serviceID, templateID, this)
-               inside the same submit handler.
-            Either way, the backend must apply rate-limiting (max 5 submissions/IP/hour)
-            and server-side validation — this frontend form alone is not sufficient.
-          -->
+          <!-- Envía a /api/contact (ver ese archivo para la configuración de la
+               API key de Resend requerida en las variables de entorno de Vercel). -->
           <form class="build__form reveal" id="buildForm" action="#" method="post" novalidate
-                data-success-text="Gracias — pronto nos pondremos en contacto">
+                data-sending-text="Enviando&hellip;"
+                data-success-text="Gracias — pronto nos pondremos en contacto"
+                data-error-text="Algo salió mal — por favor intenta de nuevo o escríbenos directamente.">
             <!-- Honeypot anti-bot field: hidden from real users via CSS, invisible to
                  screen readers via aria-hidden + tabindex, but bots that auto-fill every
                  field will trip it. script.js silently drops submissions where this is filled. -->
@@ -933,7 +928,7 @@
     <button type="button" class="btn btn--primary" id="cookieAccept">Entendido</button>
   </div>
 
-  <script src="../script.js?v=9"></script>
+  <script src="../script.js?v=10"></script>
 
   <!--
   +------------------------------------------+
